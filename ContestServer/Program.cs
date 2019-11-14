@@ -20,7 +20,19 @@ namespace ContestServer
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>();
+                    webBuilder.UseStartup<Startup>().UsePort();
                 });
+    }
+
+
+    public static class WebHostBuilderExtensions
+    {
+        public static IWebHostBuilder UsePort(this IWebHostBuilder builder)
+        {
+            var port = Environment.GetEnvironmentVariable("PORT");
+            if (string.IsNullOrEmpty(port))
+                return builder;
+            return builder.UseUrls($"http://+:{port}");
+        }
     }
 }
