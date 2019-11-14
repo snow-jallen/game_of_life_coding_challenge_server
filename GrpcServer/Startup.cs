@@ -21,7 +21,7 @@ namespace GrpcServer
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger log)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -36,7 +36,7 @@ namespace GrpcServer
 
                 endpoints.MapGet("/", async context =>
                 {
-                    log.LogWarning("Received request!");
+                    Console.WriteLine("Received request");
                     await context.Response.WriteAsync("Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
                 });
             });
