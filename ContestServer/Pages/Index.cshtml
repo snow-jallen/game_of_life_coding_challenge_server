@@ -1,7 +1,15 @@
 ﻿@page
 @model ContestServer.IndexModel
 
-<h1>Welcome</h1>
+<h1>It's a contest!</h1>
+
+<h3>Current Contestants:</h3>
+<ul>
+    @foreach (var contestant in Model.Contestants)
+    {
+        <li>@contestant.Name (@contestant.Token)</li>
+    }
+</ul>
 
 @{
 }
