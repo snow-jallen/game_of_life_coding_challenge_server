@@ -11,7 +11,7 @@ namespace GrpcClient
             Console.WriteLine("Press [enter] when you're ready to connect");
             Console.ReadLine();
 
-            var channel = GrpcChannel.ForAddress("https://localhost:5001");
+            var channel = GrpcChannel.ForAddress("https://snowse-content-server.herokuapp.com");
             var client = new Greeter.GreeterClient(channel);
             var reply = client.SayHello(new HelloRequest { Name = "Jonathan" });
             Console.WriteLine($"Greeting: {reply.Message}");
