@@ -11,25 +11,19 @@ namespace ContestServer.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class RegisterController : ControllerBase
+    public class StatsController : ControllerBase
     {
         private readonly IContestantService contestantService;
 
-        public RegisterController(IContestantService contestantService)
+        public StatsController(IContestantService contestantService)
         {
             this.contestantService = contestantService ?? throw new ArgumentNullException(nameof(contestantService));
         }
 
         [HttpGet]
-        public RegisterResponse Get([FromBody]RegisterRequest request)
+        public StatsResponse Get()
         {
-            var response = new RegisterResponse();
-            response.Name = request.Name;
-            response.Token = Guid.NewGuid();
-
-            contestantService.AddContestant(new Contestant(response.Name, response.Token));
-
-            return response;
+            return new StatsResponse { Contestants = contestantService.GetContestants() };
         }
     }
 }
