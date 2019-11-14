@@ -10,6 +10,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		heroku.yml = heroku.yml
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contest.Shared", "Contest.Shared\Contest.Shared.csproj", "{9B531A72-0AE8-4754-961F-4B61AC235955}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,6 +22,10 @@ Global
 		{A25BB9F8-00C4-4226-B395-BA70F9C3064B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A25BB9F8-00C4-4226-B395-BA70F9C3064B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A25BB9F8-00C4-4226-B395-BA70F9C3064B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B531A72-0AE8-4754-961F-4B61AC235955}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B531A72-0AE8-4754-961F-4B61AC235955}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B531A72-0AE8-4754-961F-4B61AC235955}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B531A72-0AE8-4754-961F-4B61AC235955}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
