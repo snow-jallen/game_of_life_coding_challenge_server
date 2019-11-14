@@ -3,6 +3,8 @@
 
 <h1>It's a contest!</h1>
 
+@if (Model.Contestants.Any())
+{
 <h3>Current Contestants:</h3>
 <ul>
     @foreach (var contestant in Model.Contestants)
@@ -10,6 +12,12 @@
         <li>@contestant.Name (@contestant.Token)</li>
     }
 </ul>
+}
+else
+{
+    <h3>No one has registered yet.</h3>
+    <p>Go to /register and send {"name": "your name"} in the body. :)</p>
+}
 
 @{
 }
