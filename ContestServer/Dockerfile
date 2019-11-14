@@ -7,9 +7,9 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
-COPY ["ContestServer/ContestServer.csproj", "ContestServer/"]
+COPY ["ContestServer.csproj", "ContestServer/"]
 RUN dotnet restore "ContestServer/ContestServer.csproj"
-COPY . .
+COPY . "./ContestServer"
 WORKDIR "/src/ContestServer"
 RUN dotnet build "ContestServer.csproj" -c Release -o /app/build
 
@@ -19,4 +19,4 @@ RUN dotnet publish "ContestServer.csproj" -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "ContestServer.dll"]
+CMD dotnet ContestServer.dll
