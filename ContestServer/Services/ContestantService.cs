@@ -1,5 +1,6 @@
 ﻿using Contest.Shared;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,21 +10,27 @@ namespace ContestServer.Services
 {
     public class ContestantService : IContestantService
     {
-        private System.Collections.Concurrent.ConcurrentBag<Contestant> contestants;
+        private ConcurrentDictionary<string, Contestant> contestants;
 
         public ContestantService()
         {
-            contestants = new System.Collections.Concurrent.ConcurrentBag<Contestant>();
+            contestants = new ConcurrentDictionary<string, Contestant>();
         }
 
         public void AddContestant(Contestant contestant)
         {
-            contestants.Add(contestant);
+            contestants.TryAdd(contestant.Token, contestant);
+        }
+
+        public Contestant GetContestant(string token)
+        {
+            return contestants.GetValueOrDefault(token);
         }
 
         public IEnumerable<Contestant> GetContestants()
         {
-            return contestants.ToArray();
+            return contestants.Values.ToArray();
         }
+
     }
 }

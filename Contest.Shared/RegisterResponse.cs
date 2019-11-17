@@ -8,7 +8,7 @@ namespace Contest.Shared
 {
     public class RegisterResponse
     {
-        public Guid Token { get; set; }
+        public string Token { get; set; }
         public string Name { get; set; }
     }
 }

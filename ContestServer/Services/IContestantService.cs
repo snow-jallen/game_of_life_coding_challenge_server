@@ -11,5 +11,6 @@ namespace ContestServer.Services
     {
         void AddContestant(Contestant contestant);
         IEnumerable<Contestant> GetContestants();
+        Contestant GetContestant(string token);
     }
 }

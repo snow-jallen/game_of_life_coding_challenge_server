@@ -20,12 +20,12 @@ namespace ContestServer.Controllers
             this.contestantService = contestantService ?? throw new ArgumentNullException(nameof(contestantService));
         }
 
-        [HttpGet]
-        public RegisterResponse Get([FromBody]RegisterRequest request)
+        [HttpPost]
+        public RegisterResponse Post([FromBody]RegisterRequest request)
         {
             var response = new RegisterResponse();
             response.Name = request.Name;
-            response.Token = Guid.NewGuid();
+            response.Token = Guid.NewGuid().ToString();
 
             contestantService.AddContestant(new Contestant(response.Name, response.Token));
 

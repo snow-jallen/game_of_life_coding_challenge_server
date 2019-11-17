@@ -8,6 +8,24 @@ namespace Contest.Shared
 {
     public class UpdateResponse
     {
-        
+        public GameState GameState { get; set; }
+        public int? GenerationsToCompute { get; set; }
+        public IEnumerable<Coordinate> SeedBoard { get; set; }
+        public bool IsError { get; set; }
+        public string ErrorMessage { get; set; }
+    }
+
+    public enum GameState
+    {
+        NotStarted,
+        InProgress,
+        Over
+    }
+
+    public enum ClientStatus
+    {
+        Waiting,
+        Processing,
+        Complete
     }
 }
