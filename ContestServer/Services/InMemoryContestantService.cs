@@ -19,6 +19,11 @@ namespace ContestServer.Services
 
         public void AddContestant(Contestant contestant)
         {
+            if (contestant is null)
+            {
+                throw new ArgumentNullException(nameof(contestant));
+            }
+
             contestants.TryAdd(contestant.Token, contestant);
         }
 
@@ -32,8 +37,23 @@ namespace ContestServer.Services
             return contestants.Values.ToArray();
         }
 
+        public void RemoveContestant(Contestant contestant)
+        {
+            if (contestant is null)
+            {
+                throw new ArgumentNullException(nameof(contestant));
+            }
+
+            contestants.TryRemove(contestant.Token, out var removed);
+        }
+
         public void UpdateContestantLastSeen(Contestant contestant, DateTime newLastSeen)
         {
+            if (contestant is null)
+            {
+                throw new ArgumentNullException(nameof(contestant));
+            }
+
             var updatedContestant = new Contestant(contestant.Name, contestant.Token, newLastSeen);
 
             contestants.AddOrUpdate(contestant.Token, updatedContestant, (token, existing) => updatedContestant);

@@ -13,5 +13,6 @@ namespace ContestServer.Services
         IEnumerable<Contestant> GetContestants();
         Contestant GetContestant(string token);
         void UpdateContestantLastSeen(Contestant contestant, DateTime newLastSeen);
+        void RemoveContestant(Contestant contestant);
     }
 }
