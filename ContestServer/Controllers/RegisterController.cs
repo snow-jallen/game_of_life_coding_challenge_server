@@ -14,10 +14,12 @@ namespace ContestServer.Controllers
     public class RegisterController : ControllerBase
     {
         private readonly IContestantService contestantService;
+        private readonly ITimeService timeService;
 
-        public RegisterController(IContestantService contestantService)
+        public RegisterController(IContestantService contestantService, ITimeService timeService)
         {
             this.contestantService = contestantService ?? throw new ArgumentNullException(nameof(contestantService));
+            this.timeService = timeService ?? throw new ArgumentNullException(nameof(timeService));
         }
 
         [HttpPost]
@@ -27,7 +29,7 @@ namespace ContestServer.Controllers
             response.Name = request.Name;
             response.Token = Guid.NewGuid().ToString();
 
-            contestantService.AddContestant(new Contestant(response.Name, response.Token));
+            contestantService.AddContestant(new Contestant(response.Name, response.Token, timeService.Now()));
 
             return response;
         }

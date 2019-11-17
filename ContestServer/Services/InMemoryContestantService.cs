@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace ContestServer.Services
 {
-    public class ContestantService : IContestantService
+    public class InMemoryContestantService : IContestantService
     {
         private ConcurrentDictionary<string, Contestant> contestants;
 
-        public ContestantService()
+        public InMemoryContestantService()
         {
             contestants = new ConcurrentDictionary<string, Contestant>();
         }
@@ -32,5 +32,11 @@ namespace ContestServer.Services
             return contestants.Values.ToArray();
         }
 
+        public void UpdateContestantLastSeen(Contestant contestant, DateTime newLastSeen)
+        {
+            var updatedContestant = new Contestant(contestant.Name, contestant.Token, newLastSeen);
+
+            contestants.AddOrUpdate(contestant.Token, updatedContestant, (token, existing) => updatedContestant);
+        }
     }
 }

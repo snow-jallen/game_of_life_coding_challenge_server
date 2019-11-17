@@ -14,10 +14,15 @@ namespace ContestServer.Controllers
     public class UpdateController : ControllerBase
     {
         private readonly IContestantService contestantService;
+        private readonly ITimeService timeService;
+        private readonly GameService gameService;
+        public const int UpdateRateLimitInSeconds = 5;
 
-        public UpdateController(IContestantService contestantService)
+        public UpdateController(IContestantService contestantService, ITimeService timeService, GameService gameService)
         {
             this.contestantService = contestantService ?? throw new ArgumentNullException(nameof(contestantService));
+            this.timeService = timeService ?? throw new ArgumentNullException(nameof(timeService));
+            this.gameService = gameService ?? throw new ArgumentNullException(nameof(gameService));
         }
 
         [HttpPost]
@@ -40,6 +45,26 @@ namespace ContestServer.Controllers
                 return response;
             }
 
+            var timeSinceLastUpdate = timeService.Now() - contestant.LastSeen;
+            if(timeSinceLastUpdate.TotalSeconds < UpdateRateLimitInSeconds)
+            {
+                response.IsError = true;
+                response.ErrorMessage = $"The rate limit requires you call this endpoint no more than once every {UpdateRateLimitInSeconds} seconds.";
+                return response;
+            }
+
+            contestantService.UpdateContestantLastSeen(contestant, timeService.Now());
+
+            var gameStatus = gameService.GetGameStatus();
+
+            response.GameState = gameStatus.IsStarted ? GameState.InProgress : GameState.NotStarted;
+            if(gameStatus.IsStarted)
+            {
+                response.SeedBoard = gameStatus.SeedBoard;
+                response.GenerationsToCompute = gameStatus.NumberGenerations;
+            }
+
+            response.IsError = false;
 
 
             return response;

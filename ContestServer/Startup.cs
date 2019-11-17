@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using ContestServer.Services;
 using Microsoft.AspNetCore.Builder;
@@ -26,10 +27,15 @@ namespace ContestServer
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers().AddJsonOptions(options=>
+            {
+                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            });
             services.AddRazorPages();
 
-            services.AddSingleton<IContestantService, ContestantService>();
+            services.AddSingleton<IContestantService, InMemoryContestantService>();
+            services.AddSingleton<GameService>();
+            services.AddSingleton<ITimeService, TimeService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
