@@ -5,7 +5,8 @@
     <meta http-equiv="refresh" content="5" />
 </head>
 
-<h1>It's a contest!</h1>
+<h1>2020 Snow College Engineering Week Coding Challenge</h1>
+<h2>Conway's Game of Life</h2>
 
 @if (Model.Contestants.Any())
 {
@@ -32,6 +33,7 @@ else
             </pre>
         <p>You will get a response back with a gameState ("NotStarted"), generationsToCompute (nullable int), seedBoard (list of Coordinates), issError (bool), errorMessage (string)</p>
         </li>
+        <li>Browse to <a href="/startGame">/startGame</a> to start the game</li>
         <li>
             Once the game has begun the gameState will become "InProgress", seedBoard will have the initial list of live cells, and generationsToCompute will have a value.
         </li>

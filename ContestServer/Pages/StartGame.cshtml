@@ -1,0 +1,18 @@
+﻿@page
+@model ContestServer.StartGameModel
+@{
+    ViewData["Title"] = "StartGame";
+}
+
+<h1>Start Game</h1>
+
+
+<div>
+    <form method="post">
+        <label>Seed Board</label>
+        @*<textarea asp-for="SeedBoard" rows="5" cols="80"></textarea>
+        <label>Number of generations to compute</label>
+        <input type="text" asp-for="NumGenerations" />*@
+        <input type="submit" value="Start Game" />
+    </form>
+</div>

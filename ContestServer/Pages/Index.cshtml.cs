@@ -37,5 +37,10 @@ namespace ContestServer
 
             Contestants = allContestants.Except(staleContestants);
         }
+
+        public void OnPost(string seedBoard, int numGenerations)
+        {
+
+        }
     }
 }
