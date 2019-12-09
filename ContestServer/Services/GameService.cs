@@ -17,7 +17,7 @@ namespace ContestServer.Services
 
         public GameStatus GetGameStatus() => gameStatus;
 
-        public void StartGame(Coordinate[] seed, int numGenerations)
+        public void StartGame(IEnumerable<Coordinate> seed, int numGenerations)
         {
             gameStatus = new GameStatus(seed, numGenerations);
         }
