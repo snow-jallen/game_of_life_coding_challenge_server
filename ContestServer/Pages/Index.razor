@@ -1,0 +1,71 @@
+﻿@page "/"
+@using System.Threading
+@inject IContestantService contestantService;
+@inject ITimeService  timeService;
+
+<h1>Conway's Game of Life</h1>
+
+@if (Contestants.Any())
+{
+    <h3>Current Contestants (@Contestants.Count()):</h3>
+    <ul>
+        @foreach (var contestant in Contestants)
+        {
+            <li>@contestant.Name (last seen at @contestant.LastSeen.ToShortTimeString())</li>
+        }
+    </ul>
+}
+else
+{
+    <h3>No one has registered yet.</h3>
+}
+
+<div>
+    <h3>Instructions</h3>
+    <ul>
+        <li><p>Go to /register and send {"name": "your name"} in the body. You will receive back a token that needs to be included in all future messages.</p></li>
+        <li>
+            Post to /update with an UpdateRequest in the following format:<br />
+            <pre>
+  {"token": "{guid value}", "clientStatus": "waiting"}
+            </pre>
+            <p>You will get a response back with a gameState ("NotStarted"), generationsToCompute (nullable int), seedBoard (list of Coordinates), isError (bool), errorMessage (string)</p>
+        </li>
+        <li>Browse to <a href="/startGame">/startGame</a> to start the game</li>
+        <li>
+            Once the game has begun the gameState will become "InProgress", seedBoard will have the initial list of live cells, and generationsToCompute will have a value.
+        </li>
+    </ul>
+</div>
+
+@code {
+    const int UserExpirationInSeconds = 30;
+
+    public IEnumerable<Contestant>
+    Contestants { get; private set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        updateContestants();
+        var timer = new Timer(new TimerCallback(_ =>
+        {
+            InvokeAsync(updateContestants);
+        }), state: null, dueTime: 2_000, period: 2_000);
+    }
+
+    private void updateContestants()
+    {
+        var allContestants = contestantService.GetContestants();
+        var staleContestants = from c in allContestants
+                               where c.LastSeen.AddSeconds(UserExpirationInSeconds) < timeService.Now()
+                               select c;
+
+        foreach (var staleContestant in staleContestants)
+        {
+            contestantService.RemoveContestant(staleContestant);
+        }
+
+        Contestants = allContestants.Except(staleContestants);
+        StateHasChanged();
+    }
+}

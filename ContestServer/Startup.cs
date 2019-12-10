@@ -32,7 +32,7 @@ namespace ContestServer
                 options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
             });
             services.AddRazorPages();
-
+            services.AddServerSideBlazor();
             services.AddSingleton<IContestantService, InMemoryContestantService>();
             services.AddSingleton<GameService>();
             services.AddSingleton<ITimeService, TimeService>();
@@ -47,7 +47,7 @@ namespace ContestServer
             }
 
             app.UseHttpsRedirection();
-
+            app.UseStaticFiles();
             app.UseRouting();
 
             app.UseAuthorization();
@@ -56,6 +56,8 @@ namespace ContestServer
             {
                 endpoints.MapRazorPages();
                 endpoints.MapControllers();
+                endpoints.MapBlazorHub();
+                endpoints.MapFallbackToPage("/_Host");
             });
         }
     }
