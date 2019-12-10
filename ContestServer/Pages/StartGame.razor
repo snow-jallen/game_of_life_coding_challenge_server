@@ -1,0 +1,52 @@
+﻿@page "/StartGame"
+@using System.Threading
+@using System.Text.Json
+@inject GameService game
+@inject NavigationManager NavManager
+
+<h1>Start Game</h1>
+
+<div>
+    <label>Seed Board</label><br />
+    <textarea @bind="SeedBoard" rows="5" cols="80"></textarea>
+    <label>Number of generations to compute</label><br />
+    <input type="text" @bind="NumGenerations" />
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <button class="btn btn-primary" @onclick="begin">Start Game</button>
+
+    <p>@SerializedBoard</p>
+</div>
+
+@code {
+    private JsonSerializerOptions options;
+
+    protected override void OnInitialized()
+    {
+        var board = new[]
+        {
+            new Coordinate(1, 1), new Coordinate(1, 2), new Coordinate(2, 2)
+        };
+        SerializedBoard = JsonSerializer.Serialize(board);
+    }
+
+    public string SerializedBoard { get; set; }
+    public string SeedBoard { get; set; }
+    public int NumGenerations { get; set; }
+
+    public void begin()
+    {
+        //serialize board
+        IEnumerable<Coordinate> board;
+        try
+        {
+            board = JsonSerializer.Deserialize<IEnumerable<Coordinate>>(SeedBoard);
+
+            game.StartGame(board, NumGenerations);
+        }
+        catch
+        {
+            //ModelState.AddModelError(nameof(SeedBoard), "Unable to parse seed board.");
+        }
+        NavManager.NavigateTo("/");
+    }
+}

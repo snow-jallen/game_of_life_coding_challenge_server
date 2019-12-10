@@ -13,7 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contest.Shared", "Contest.Shared\Contest.Shared.csproj", "{9B531A72-0AE8-4754-961F-4B61AC235955}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contest.Tests", "Contest.Tests\Contest.Tests.csproj", "{D72A6854-5E4C-44D6-A0EF-60065E4EC754}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contest.Tests", "Contest.Tests\Contest.Tests.csproj", "{D72A6854-5E4C-44D6-A0EF-60065E4EC754}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
