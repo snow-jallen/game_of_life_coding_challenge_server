@@ -4,23 +4,54 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using FluentAssertions;
+using FluentAssertions.Specialized;
 
 namespace Contest.Tests
 {
     [TestFixture]
     public class GameSolverTests
     {		
-		[TestCase("(1,1)", "", 1, Description = "Any live cell with fewer than two live neighbors dies as if by underpopulation")]
-		public void SolveBoard(string seed, string result, int numGenerations)
+		[TestCase("(1,1)", "", 1, "Any live cell with fewer than two live neighbors dies as if by underpopulation (0 neighbors)")]
+		[TestCase("(1,1);(1,2)", "", 1, "Any live cell with fewer than two live neighbors dies as if by underpopulation (1 neighbor)")]
+		[TestCase("(1,1);(1,2);(2,1)", "(1,1);(1,2);(2,1);(2,2)", 1, "Any live cell with two or three live neighbors lives on to the next generation (2 neigbors)")]
+		[TestCase("(1,1);(1,2);(2,1);(2,2)", "(1,1);(1,2);(2,1);(2,2)", 1, "Any live cell with two or three live neighbors lives on to the next generation (3 neigbors)")]
+		[TestCase("(-1,2);(1,1);(1,2);(2,1);(2,2)", "(-1,2);(-1,1);(1,3);(2,1);(2,2)", 1, "Any live cell with more than three live neighbors dies, as if by overpopulation")]
+		[TestCase("(1,1);(3,1);(2,3)","(2,2)", 1, "Any dead cell with exactly three live neighbors becomes a live cell, as if by reproduction")]
+		public void SolveBoard(string seed, string result, int numGenerations, string reason)
 		{
 			var seedBoard = seed.FromString();
 			var expectedResult = result.FromString();
 
 			var actualResult = GameSolver.Solve(seedBoard, numGenerations);
 
-			Assert.AreEqual(expectedResult, actualResult);
+			expectedResult.Should().BeEquivalentTo(actualResult, because: reason);
 		}
-    }
+
+		[TestCase("(1,1);(1,2)", 1, Description = "1 neighbor")]
+		[TestCase("(1,1);(1,2);(2,1)", 2, Description = "2 neighbors")]
+		public void FindNeighbors(string seed, int expectedNeighbors)
+		{
+			var board = seed.FromString();
+			int actualNeighbors = GameSolver.FindNeighborCount(board.First(), board);
+
+			Assert.AreEqual(expectedNeighbors, actualNeighbors);
+		}
+
+		[Test]
+		public void UpperLeftFrom1_1()
+		{
+			var starting = new Coordinate(1, 1);
+			Assert.AreEqual(starting.UpperLeft, new Coordinate(-1, 2));
+		}
+
+		[Test]
+		public void LowerRightFrom1_1()
+		{
+			var starting = new Coordinate(1, 1);
+			Assert.AreEqual(starting.LowerRight, new Coordinate(2, -1));
+		}
+	}
 
 	public static class SolverExtensions
 	{
