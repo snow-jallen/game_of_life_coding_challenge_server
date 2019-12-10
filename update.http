@@ -1,0 +1,7 @@
+POST https://localhost:5001/update
+content-type: application/json
+
+{
+    "token": "085823b7-19a2-4cb9-93aa-483a9462326f",
+    "clientStatus": "waiting"
+}
