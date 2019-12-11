@@ -8,8 +8,12 @@
     <label>Number of generations to compute</label><br />
     <input type="text" @bind="NumGenerations" />
     <div asp-validation-summary="All" class="text-danger"></div>
+    <button class="btn btn-primary" @onclick="solve">Get Solution</button>
 
     <p>@SerializedBoard()</p>
+
+    <h3>Solution: </h3>
+    <p>@Solution</p>
 
     <h3>Configure Board</h3>
     <div>
@@ -40,6 +44,7 @@
     protected override void OnInitialized()
     {
         StartingBoard = new bool[Height+1, Width+1];
+        coordinates = new Coordinate[] {};
     }
 
     public string SeedBoard { get; set; }
@@ -47,6 +52,8 @@
     public static int Width = 60;
     public static int Height = 40;
     public bool[,] StartingBoard { get; set; }
+    public string Solution { get; set; }
+    IEnumerable<Coordinate> coordinates { get; set; }
     
     public int computedRow(int row)
     {
@@ -59,7 +66,7 @@
 
     public string SerializedBoard()
     {
-        IEnumerable<Coordinate> coordinates = new Coordinate[] {};
+        coordinates = new Coordinate[] {};
         for(int h = 1; h <= Height; h++)
         {
             for(int w = 1; w <= Width; w++)
@@ -77,6 +84,12 @@
         bool rowIsZero = computedRow(row) == 0;
         bool columnIsZero = computedColumn(column) == 0;
         return rowIsZero || columnIsZero;
+    }
+
+    public void solve()
+    {
+        var solution = GameSolver.Solve(coordinates, NumGenerations);
+        Solution = JsonSerializer.Serialize(solution);
     }
 
 }
