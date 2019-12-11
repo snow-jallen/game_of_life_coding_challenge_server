@@ -9,6 +9,7 @@ namespace ContestServer.Services
     public class GameService
     {
         private GameStatus gameStatus;
+        private IEnumerable<Coordinate> endingBoard;
 
         public GameService()
         {
@@ -17,9 +18,10 @@ namespace ContestServer.Services
 
         public GameStatus GetGameStatus() => gameStatus;
 
-        public void StartGame(IEnumerable<Coordinate> seed, int numGenerations)
+        public void StartGame(IEnumerable<Coordinate> seed, int numGenerations, IEnumerable<Coordinate> endingBoard)
         {
             gameStatus = new GameStatus(seed, numGenerations);
+            this.endingBoard = endingBoard;
         }
     }
 

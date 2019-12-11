@@ -9,6 +9,13 @@
 <h1>Start Game</h1>
 
 <div>
+    <label>Pick a default game:</label>
+    <select @bind="selectedDefaultGame" >
+        @foreach(var game in DefaultGames.Keys)
+        {
+            <option value="@game">@game</option>
+        }
+    </select>
     <label>Number of generations to compute</label><br />
     <input type="text" @bind="NumGenerations" />
     <div asp-validation-summary="All" class="text-danger"></div>
@@ -42,11 +49,19 @@
 </div>
 
 @code {
+    public Dictionary<string, string> DefaultGames = new Dictionary<string, string>(new[]
+    {
+        new KeyValuePair<string,string>("Gosper Glider Gun", SampleGames.GosperGliderGunInitial),
+        new KeyValuePair<string, string>("Left Leaning O", SampleGames.LeftLeaningO),
+    });
+    string selectedDefaultGame;
+
     private JsonSerializerOptions options;
 
     protected override void OnInitialized()
     {
         StartingBoard = new bool[Height+1, Width+1];
+        selectedDefaultGame = DefaultGames.Keys.First();
     }
 
     public string SeedBoard { get; set; }
@@ -89,18 +104,12 @@
 
     public void begin()
     {
-        //serialize board
-        IEnumerable<Coordinate> board;
-        try
-        {
-            board = JsonSerializer.Deserialize<IEnumerable<Coordinate>>(SerializedBoard());
+        var jsonBoard = DefaultGames[selectedDefaultGame];
+        var startingBoard = JsonSerializer.Deserialize<IEnumerable<Coordinate>>(jsonBoard);
+        var endingBoard = GameSolver.Solve(startingBoard, NumGenerations);
 
-            game.StartGame(board, NumGenerations);
-        }
-        catch
-        {
-            //ModelState.AddModelError(nameof(SeedBoard), "Unable to parse seed board.");
-        }
+        game.StartGame(startingBoard, NumGenerations, endingBoard);
+
         NavManager.NavigateTo("/");
     }
 }
