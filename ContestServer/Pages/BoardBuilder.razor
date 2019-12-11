@@ -1,27 +1,19 @@
-﻿@page "/StartGame"
+@page "/BoardBuilder"
 @using System.Threading
 @using System.Text.Json
 @using Contest.Shared
 
-@inject GameService game
-@inject NavigationManager NavManager
-
-<h1>Start Game</h1>
 
 <div>
-    <label>Pick a default game:</label>
-    <select @bind="selectedDefaultGame" >
-        @foreach(var game in DefaultGames.Keys)
-        {
-            <option value="@game">@game</option>
-        }
-    </select>
     <label>Number of generations to compute</label><br />
     <input type="text" @bind="NumGenerations" />
     <div asp-validation-summary="All" class="text-danger"></div>
-    <button class="btn btn-primary" @onclick="begin">Start Game</button>
+    <button class="btn btn-primary" @onclick="solve">Get Solution</button>
 
     <p>@SerializedBoard()</p>
+
+    <h3>Solution: </h3>
+    <p>@Solution</p>
 
     <h3>Configure Board</h3>
     <div>
@@ -49,19 +41,10 @@
 </div>
 
 @code {
-    public Dictionary<string, string> DefaultGames = new Dictionary<string, string>(new[]
-    {
-        new KeyValuePair<string,string>("Gosper Glider Gun", SampleGames.GosperGliderGunInitial),
-        new KeyValuePair<string, string>("Left Leaning O", SampleGames.LeftLeaningO),
-    });
-    string selectedDefaultGame;
-
-    private JsonSerializerOptions options;
-
     protected override void OnInitialized()
     {
         StartingBoard = new bool[Height+1, Width+1];
-        selectedDefaultGame = DefaultGames.Keys.First();
+        coordinates = new Coordinate[] {};
     }
 
     public string SeedBoard { get; set; }
@@ -69,6 +52,8 @@
     public static int Width = 60;
     public static int Height = 40;
     public bool[,] StartingBoard { get; set; }
+    public string Solution { get; set; }
+    IEnumerable<Coordinate> coordinates { get; set; }
     
     public int computedRow(int row)
     {
@@ -81,7 +66,7 @@
 
     public string SerializedBoard()
     {
-        IEnumerable<Coordinate> coordinates = new Coordinate[] {};
+        coordinates = new Coordinate[] {};
         for(int h = 1; h <= Height; h++)
         {
             for(int w = 1; w <= Width; w++)
@@ -101,14 +86,10 @@
         return rowIsZero || columnIsZero;
     }
 
-    public void begin()
+    public void solve()
     {
-        var jsonBoard = DefaultGames[selectedDefaultGame];
-        var startingBoard = JsonSerializer.Deserialize<IEnumerable<Coordinate>>(jsonBoard);
-        var endingBoard = GameSolver.Solve(startingBoard, NumGenerations);
-
-        game.StartGame(startingBoard, NumGenerations, endingBoard);
-
-        NavManager.NavigateTo("/");
+        var solution = GameSolver.Solve(coordinates, NumGenerations);
+        Solution = JsonSerializer.Serialize(solution);
     }
+
 }
