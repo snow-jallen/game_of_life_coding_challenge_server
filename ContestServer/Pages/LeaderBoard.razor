@@ -1,6 +1,19 @@
 ﻿@Page  "/leaderboard"
+@inject GameService gameService;
 <h3>LeaderBoard</h3>
 
+@if(isStarted)
+{
+    <h2>Game has started!</h2>
+}
+
 @code {
+    bool isStarted;
+
+    void refresh()
+    {
+        var status = gameService.GetGameStatus();
+        isStarted = status.IsStarted;
+    }
 
 }
