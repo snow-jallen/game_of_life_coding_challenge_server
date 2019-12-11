@@ -54,7 +54,7 @@
     public static int Width = 60;
     public static int Height = 40;
     public bool[,] StartingBoard { get; set; }
-    
+
     public int computedRow(int row)
     {
         return row - ( Height / 2 );
@@ -76,7 +76,8 @@
                     : coordinates;
             }
         }
-        return JsonSerializer.Serialize(coordinates);
+        var result = JsonSerializer.Serialize(coordinates);
+        return result;
     }
 
     public bool RowOrColumnIsZero(int row, int column)
