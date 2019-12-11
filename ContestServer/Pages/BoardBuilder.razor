@@ -1,0 +1,82 @@
+@page "/BoardBuilder"
+@using System.Threading
+@using System.Text.Json
+@using Contest.Shared
+
+
+<div>
+    <label>Number of generations to compute</label><br />
+    <input type="text" @bind="NumGenerations" />
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <p>@SerializedBoard()</p>
+
+    <h3>Configure Board</h3>
+    <div>
+        @for(int h = Height; h > 0; h--)
+        {
+            <div class = "row">
+                @for(int w = 1; w <= Width; w++)
+                {
+                    var row = h;
+                    var column = w;
+                    if(@RowOrColumnIsZero(row, column))
+                    {
+                        <input type="checkbox" disabled >
+                    }
+                    else
+                    {
+                        <input type="checkbox"
+                            @bind-value="StartingBoard[row, column]"
+                            @bind-value:event="oninput">
+                    }
+                }
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    protected override void OnInitialized()
+    {
+        StartingBoard = new bool[Height+1, Width+1];
+    }
+
+    public string SeedBoard { get; set; }
+    public int NumGenerations { get; set; }
+    public static int Width = 60;
+    public static int Height = 40;
+    public bool[,] StartingBoard { get; set; }
+    
+    public int computedRow(int row)
+    {
+        return row - ( Height / 2 );
+    }
+    public int computedColumn(int column)
+    {
+        return column - ( Width / 2 );
+    }
+
+    public string SerializedBoard()
+    {
+        IEnumerable<Coordinate> coordinates = new Coordinate[] {};
+        for(int h = 1; h <= Height; h++)
+        {
+            for(int w = 1; w <= Width; w++)
+            {
+                coordinates = StartingBoard[h,w]
+                    ? coordinates.Append(new Coordinate(computedRow(h), computedColumn(w)))
+                    : coordinates;
+            }
+        }
+        return JsonSerializer.Serialize(coordinates);
+    }
+
+    public bool RowOrColumnIsZero(int row, int column)
+    {
+        bool rowIsZero = computedRow(row) == 0;
+        bool columnIsZero = computedColumn(column) == 0;
+        return rowIsZero || columnIsZero;
+    }
+
+}
