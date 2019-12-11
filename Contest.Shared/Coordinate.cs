@@ -49,14 +49,23 @@ namespace Contest.Shared
             throw new ArgumentOutOfRangeException(nameof(serialized), "Unable to parse x and y");
         }
 
+        [JsonIgnore]
         public Coordinate LowerMiddle => new Coordinate(translate(X, 0), translate(Y, -1));
+        [JsonIgnore]
         public Coordinate LowerRight => new Coordinate(translate(X, 1), translate(Y, -1));
+        [JsonIgnore]
         public Coordinate LowerLeft => new Coordinate(translate(X, -1), translate(Y, -1));
+        [JsonIgnore]
         public Coordinate Right => new Coordinate(translate(X, 1), translate(Y, 0));
+        [JsonIgnore]
         public Coordinate Left => new Coordinate(translate(X, -1), translate(Y, 0));
+        [JsonIgnore]
         public Coordinate UpperRight => new Coordinate(translate(X, 1), translate(Y, 1));
+        [JsonIgnore]
         public Coordinate UpperMiddle => new Coordinate(translate(X, 0), translate(Y, 1));
+        [JsonIgnore]
         public Coordinate UpperLeft => new Coordinate(translate(X, -1), translate(Y, 1));
+        [JsonIgnore]
         public IEnumerable<Coordinate> Neighbors => new[] { LowerMiddle, LowerRight, LowerLeft, Right, Left, UpperRight, UpperMiddle, UpperLeft };
 
         private int translate(int orig, int change)
@@ -84,6 +93,6 @@ namespace Contest.Shared
 
         public static bool operator !=(Coordinate c1, Coordinate c2) => !(c1 == c2);
 
-        public override int GetHashCode() => X.GetHashCode() ^ Y.GetHashCode();        
+        public override int GetHashCode() => X.GetHashCode() ^ Y.GetHashCode();
     }
 }
