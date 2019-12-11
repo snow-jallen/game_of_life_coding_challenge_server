@@ -2,6 +2,7 @@
 @using System.Threading
 @inject IContestantService contestantService;
 @inject ITimeService  timeService;
+@inject GameService gameService;
 
 <h1>Conway's Game of Life</h1>
 
@@ -36,6 +37,19 @@ else
             Once the game has begun the gameState will become "InProgress", seedBoard will have the initial list of live cells, and generationsToCompute will have a value.
         </li>
     </ul>
+</div>
+
+<div>
+    <h3>Game Status</h3>
+    @if(gameService.GetGameStatus().IsStarted)
+    {
+        <h4>Game has started!</h4>
+        <a href="/leaderboard">See Game Stats</a>
+    }
+    else
+    {
+        <h4>Game has not started yet.</h4>
+    }
 </div>
 
 @code {
