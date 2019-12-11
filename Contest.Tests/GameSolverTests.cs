@@ -11,13 +11,16 @@ namespace Contest.Tests
 {
     [TestFixture]
     public class GameSolverTests
-    {		
+    {
+		const string stillLifeII = "(1,1);(2,1);(2,-1);(2,-2);(2,-3);(1,-3);(4,1);(5,1);(4,-1);(4,-2);(4,-3);(5,-3)";
+		
 		[TestCase("(1,1)", "", 1, "Any live cell with fewer than two live neighbors dies as if by underpopulation (0 neighbors)")]
 		[TestCase("(1,1);(1,2)", "", 1, "Any live cell with fewer than two live neighbors dies as if by underpopulation (1 neighbor)")]
 		[TestCase("(1,1);(1,2);(2,1)", "(1,1);(1,2);(2,1);(2,2)", 1, "Any live cell with two or three live neighbors lives on to the next generation (2 neigbors)")]
 		[TestCase("(1,1);(1,2);(2,1);(2,2)", "(1,1);(1,2);(2,1);(2,2)", 1, "Any live cell with two or three live neighbors lives on to the next generation (3 neigbors)")]
 		[TestCase("(-1,2);(1,1);(1,2);(2,1);(2,2)", "(-1,2);(-1,1);(1,3);(2,1);(2,2)", 1, "Any live cell with more than three live neighbors dies, as if by overpopulation")]
 		[TestCase("(1,1);(3,1);(2,3)","(2,2)", 1, "Any dead cell with exactly three live neighbors becomes a live cell, as if by reproduction")]
+		[TestCase(stillLifeII, stillLifeII, 555,"stillLifeII doesn't ever change")]
 		public void SolveBoard(string seed, string result, int numGenerations, string reason)
 		{
 			var seedBoard = seed.FromString();

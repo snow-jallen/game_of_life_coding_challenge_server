@@ -25,15 +25,13 @@ namespace Contest.Shared
             foreach(var cell in board)
             {
                 var cellNeighbors = FindNeighborCount(cell, board);
-                if(cellNeighbors < 2 || cellNeighbors > 3)
-                {
-                    //cell dies.
-                }
+
                 if(cellNeighbors == 2 || cellNeighbors == 3)
                 {
                     //cell lives.
                     result.Add(cell);
                 }
+
                 //neighbor cells might(?) become alive?
                 foreach(var neighbor in cell.Neighbors)
                 {
