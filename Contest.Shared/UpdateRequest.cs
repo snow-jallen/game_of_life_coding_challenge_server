@@ -12,7 +12,7 @@ namespace Contest.Shared
     {
         public string Token { get; set; }
         public ClientStatus Status { get; set; }
-        public int? GenerationsComputed { get; set; }
+        public long? GenerationsComputed { get; set; }
         public IEnumerable<Coordinate> ResultBoard { get; set; }
     }
 }

@@ -7,12 +7,13 @@ namespace Contest.Shared
 {
     public class GameSolver
     {
-        public static IEnumerable<Coordinate> Solve(IEnumerable<Coordinate> startingBoard, int numGenerations)
+        public static IEnumerable<Coordinate> Solve(IEnumerable<Coordinate> startingBoard, long numGenerations)
         {
             var resultBoard = new List<Coordinate>(startingBoard);
 
-            for (int generation = numGenerations; generation > 0; generation--)
+            for (long generation = numGenerations; generation > 0; generation--)
             {
+                Console.Write($"{generation} ");
                 resultBoard = doGeneration(resultBoard);
             }
 

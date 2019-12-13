@@ -1,19 +1,28 @@
-﻿@Page  "/leaderboard"
+﻿@page  "/leaderboard"
+@using System.Threading
 @inject GameService gameService;
-<h3>LeaderBoard</h3>
+<h1>Leader Board</h1>
 
-@if(isStarted)
+@if (status.IsStarted)
 {
     <h2>Game has started!</h2>
+    <p>Computing @status.NumberGenerations generations</p>
 }
 
 @code {
-    bool isStarted;
+    protected override void OnInitialized()
+    {
+        refresh();
+        var timer = new Timer(new TimerCallback(_ =>
+        {
+            InvokeAsync(refresh);
+        }), state: null, dueTime: 1_000, period: 1_000);
+    }
+
+    GameStatus status;
 
     void refresh()
     {
-        var status = gameService.GetGameStatus();
-        isStarted = status.IsStarted;
+        status = gameService.GetGameStatus();
     }
-
 }

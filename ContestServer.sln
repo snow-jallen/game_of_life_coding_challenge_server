@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contest.Shared", "Contest.S
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contest.Tests", "Contest.Tests\Contest.Tests.csproj", "{D72A6854-5E4C-44D6-A0EF-60065E4EC754}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleClient", "SampleClient\SampleClient.csproj", "{A6CF0EDF-B2F0-4A92-A8B8-744DC0DCFCFE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{D72A6854-5E4C-44D6-A0EF-60065E4EC754}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D72A6854-5E4C-44D6-A0EF-60065E4EC754}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D72A6854-5E4C-44D6-A0EF-60065E4EC754}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6CF0EDF-B2F0-4A92-A8B8-744DC0DCFCFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6CF0EDF-B2F0-4A92-A8B8-744DC0DCFCFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6CF0EDF-B2F0-4A92-A8B8-744DC0DCFCFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6CF0EDF-B2F0-4A92-A8B8-744DC0DCFCFE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -28,7 +28,7 @@ namespace Contest.Tests
                 new Coordinate(1,1),
                 new Coordinate(1,2)
             };
-            gameService.StartGame(seed, numGenerations: 5);
+            gameService.StartGame(seed, numGenerations: 5, endingBoard: null);
 
             var gameStatus = gameService.GetGameStatus();
             gameStatus.IsStarted.Should().BeTrue();

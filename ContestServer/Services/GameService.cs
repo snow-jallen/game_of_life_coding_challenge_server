@@ -18,7 +18,7 @@ namespace ContestServer.Services
 
         public GameStatus GetGameStatus() => gameStatus;
 
-        public void StartGame(IEnumerable<Coordinate> seed, int numGenerations, IEnumerable<Coordinate> endingBoard)
+        public void StartGame(IEnumerable<Coordinate> seed, long numGenerations, IEnumerable<Coordinate> endingBoard)
         {
             gameStatus = new GameStatus(seed, numGenerations);
             this.endingBoard = endingBoard;
@@ -27,7 +27,7 @@ namespace ContestServer.Services
 
     public class GameStatus
     {
-        public GameStatus(IEnumerable<Coordinate> seedBoard = null, int? numGenerations = null)
+        public GameStatus(IEnumerable<Coordinate> seedBoard = null, long? numGenerations = null)
         {
             IsStarted = seedBoard != null;
             SeedBoard = seedBoard;
@@ -35,7 +35,7 @@ namespace ContestServer.Services
         }
         public bool IsStarted { get; private set; }
         public IEnumerable<Coordinate> SeedBoard { get; private set; }
-        public int? NumberGenerations { get; private set; }
+        public long? NumberGenerations { get; private set; }
     }
 }
 

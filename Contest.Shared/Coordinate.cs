@@ -49,23 +49,31 @@ namespace Contest.Shared
             throw new ArgumentOutOfRangeException(nameof(serialized), "Unable to parse x and y");
         }
 
-        [JsonIgnore]
+        [System.Text.Json.Serialization.JsonIgnore][Newtonsoft.Json.JsonIgnore]
         public Coordinate LowerMiddle => new Coordinate(translate(X, 0), translate(Y, -1));
-        [JsonIgnore]
+        [System.Text.Json.Serialization.JsonIgnore]
+        [Newtonsoft.Json.JsonIgnore]
         public Coordinate LowerRight => new Coordinate(translate(X, 1), translate(Y, -1));
-        [JsonIgnore]
+        [System.Text.Json.Serialization.JsonIgnore]
+        [Newtonsoft.Json.JsonIgnore]
         public Coordinate LowerLeft => new Coordinate(translate(X, -1), translate(Y, -1));
-        [JsonIgnore]
+        [System.Text.Json.Serialization.JsonIgnore]
+        [Newtonsoft.Json.JsonIgnore]
         public Coordinate Right => new Coordinate(translate(X, 1), translate(Y, 0));
-        [JsonIgnore]
+        [System.Text.Json.Serialization.JsonIgnore]
+        [Newtonsoft.Json.JsonIgnore]
         public Coordinate Left => new Coordinate(translate(X, -1), translate(Y, 0));
-        [JsonIgnore]
+        [System.Text.Json.Serialization.JsonIgnore]
+        [Newtonsoft.Json.JsonIgnore]
         public Coordinate UpperRight => new Coordinate(translate(X, 1), translate(Y, 1));
-        [JsonIgnore]
+        [System.Text.Json.Serialization.JsonIgnore]
+        [Newtonsoft.Json.JsonIgnore]
         public Coordinate UpperMiddle => new Coordinate(translate(X, 0), translate(Y, 1));
-        [JsonIgnore]
+        [System.Text.Json.Serialization.JsonIgnore]
+        [Newtonsoft.Json.JsonIgnore]
         public Coordinate UpperLeft => new Coordinate(translate(X, -1), translate(Y, 1));
-        [JsonIgnore]
+        [System.Text.Json.Serialization.JsonIgnore]
+        [Newtonsoft.Json.JsonIgnore]
         public IEnumerable<Coordinate> Neighbors => new[] { LowerMiddle, LowerRight, LowerLeft, Right, Left, UpperRight, UpperMiddle, UpperLeft };
 
         private int translate(int orig, int change)

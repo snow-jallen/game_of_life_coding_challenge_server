@@ -11,7 +11,7 @@ namespace Contest.Shared
     public class UpdateResponse
     {
         public GameState GameState { get; set; }
-        public int? GenerationsToCompute { get; set; }
+        public long? GenerationsToCompute { get; set; }
         public IEnumerable<Coordinate> SeedBoard { get; set; }
         public bool IsError { get; set; }
         public string ErrorMessage { get; set; }
