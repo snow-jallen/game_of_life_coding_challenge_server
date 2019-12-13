@@ -54,7 +54,26 @@ namespace ContestServer.Services
                 throw new ArgumentNullException(nameof(contestant));
             }
 
-            var updatedContestant = new Contestant(contestant.Name, contestant.Token, status.LastSeen, status.GenerationsComputed, status.StatusCode);
+            if (status is null)
+            {
+                throw new ArgumentNullException(nameof(status));
+            }
+
+            var startedGameAt = contestant.StartedGameAt;
+            if (contestant.StatusCode == ClientStatus.Waiting && status.StatusCode == ClientStatus.Processing)
+                startedGameAt = DateTime.Now;
+
+            var endedGameAt = contestant.EndedGameAt;
+            if (contestant.StatusCode == ClientStatus.Processing && status.StatusCode == ClientStatus.Complete)
+                endedGameAt = DateTime.Now;
+
+            var updatedContestant = new Contestant(contestant.Name,
+                contestant.Token,
+                status.LastSeen,
+                status.GenerationsComputed,
+                status.StatusCode,
+                startedGameAt,
+                endedGameAt);
 
             contestants.AddOrUpdate(contestant.Token, updatedContestant, (token, existing) => updatedContestant);
         }

@@ -15,6 +15,7 @@
             <th>Last Seen</th>
             <th>Generations</th>
             <th>Status</th>
+            <th>Elapsed</th>
         </tr>
         @foreach (var contestant in contestantService.GetContestants())
         {
@@ -23,6 +24,7 @@
                 <td>@contestant.LastSeen.ToShortTimeString()</td>
                 <td>@contestant.GenerationsComputed</td>
                 <td>@contestant.StatusCode</td>
+                <td>@contestant.Elapsed</td>
             </tr>
         }
     </table>
