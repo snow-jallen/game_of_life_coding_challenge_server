@@ -23,6 +23,11 @@ namespace ContestServer.Services
             gameStatus = new GameStatus(seed, numGenerations);
             this.endingBoard = endingBoard;
         }
+
+        public void EndGame()
+        {
+            gameStatus.IsGameOver = true;
+        }
     }
 
     public class GameStatus
@@ -34,6 +39,7 @@ namespace ContestServer.Services
             NumberGenerations = numGenerations;
         }
         public bool IsStarted { get; private set; }
+        public bool IsGameOver { get; set; }
         public IEnumerable<Coordinate> SeedBoard { get; private set; }
         public long? NumberGenerations { get; private set; }
     }

@@ -63,6 +63,9 @@ namespace ContestServer.Controllers
             var gameStatus = gameService.GetGameStatus();
 
             response.GameState = gameStatus.IsStarted ? GameState.InProgress : GameState.NotStarted;
+            if (gameStatus.IsGameOver)
+                response.GameState = GameState.Over;
+
             if(gameStatus.IsStarted)
             {
                 response.SeedBoard = gameStatus.SeedBoard;
@@ -70,7 +73,6 @@ namespace ContestServer.Controllers
             }
 
             response.IsError = false;
-
 
             return response;
         }
