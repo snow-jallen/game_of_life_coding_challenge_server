@@ -9,43 +9,51 @@
 <h1>Start Game</h1>
 
 <div>
-    <label>Pick a default game:</label>
-    <select @bind="selectedDefaultGame" >
-        @foreach(var game in DefaultGames.Keys)
-        {
-            <option value="@game">@game</option>
-        }
-    </select>
-    <label>Number of generations to compute</label><br />
-    <input type="text" @bind="NumGenerations" />
-    <div asp-validation-summary="All" class="text-danger"></div>
-    <button class="btn btn-primary" @onclick="begin">Start Game</button>
+    @if (gameIsStarting)
+    {
+        <p>Solving game...</p>
+        <p>Once solution is ready clients will be notified the game has started!</p>
+    }
+    else
+    {
+        <label>Pick a default game:</label>
+        <select @bind="selectedDefaultGame">
+            @foreach (var game in DefaultGames.Keys)
+            {
+                <option value="@game">@game</option>
+            }
+        </select>
+        <label>Number of generations to compute</label><br />
+        <input type="text" @bind="NumGenerations" />
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <button class="btn btn-primary" @onclick="begin">Start Game</button>
 
-    <p>@SerializedBoard()</p>
+        <p>@SerializedBoard()</p>
 
-    <h3>Configure Board</h3>
-    <div>
-        @for(int h = Height; h > 0; h--)
-        {
-            <div class = "row">
-                @for(int w = 1; w <= Width; w++)
-                {
-                    var row = h;
-                    var column = w;
-                    if(@RowOrColumnIsZero(row, column))
+        <h3>Configure Board</h3>
+        <div>
+            @for (int h = Height; h > 0; h--)
+            {
+                <div class="row">
+                    @for (int w = 1; w <= Width; w++)
                     {
-                        <input type="checkbox" disabled >
+                        var row = h;
+                        var column = w;
+                        if (@RowOrColumnIsZero(row, column))
+                        {
+                            <input type="checkbox" disabled>
+                        }
+                        else
+                        {
+                            <input type="checkbox"
+                                   @bind-value="StartingBoard[row, column]"
+                                   @bind-value:event="oninput">
+                        }
                     }
-                    else
-                    {
-                        <input type="checkbox"
-                            @bind-value="StartingBoard[row, column]"
-                            @bind-value:event="oninput">
-                    }
-                }
-            </div>
-        }
-    </div>
+                </div>
+            }
+        </div>
+    }
 </div>
 
 @code {
@@ -55,38 +63,38 @@
         new KeyValuePair<string, string>("Left Leaning O", SampleGames.LeftLeaningO),
     });
     string selectedDefaultGame;
-
+    bool gameIsStarting = false;
     private JsonSerializerOptions options;
 
     protected override void OnInitialized()
     {
-        StartingBoard = new bool[Height+1, Width+1];
+        StartingBoard = new bool[Height + 1, Width + 1];
         selectedDefaultGame = DefaultGames.Keys.First();
     }
 
     public string SeedBoard { get; set; }
-    public int NumGenerations { get; set; } = 15;
+    public int NumGenerations { get; set; } = 150;
     public static int Width = 60;
     public static int Height = 40;
     public bool[,] StartingBoard { get; set; }
-    
+
     public int computedRow(int row)
     {
-        return row - ( Height / 2 );
+        return row - (Height / 2);
     }
     public int computedColumn(int column)
     {
-        return column - ( Width / 2 );
+        return column - (Width / 2);
     }
 
     public string SerializedBoard()
     {
-        IEnumerable<Coordinate> coordinates = new Coordinate[] {};
-        for(int h = 1; h <= Height; h++)
+        IEnumerable<Coordinate> coordinates = new Coordinate[] { };
+        for (int h = 1; h <= Height; h++)
         {
-            for(int w = 1; w <= Width; w++)
+            for (int w = 1; w <= Width; w++)
             {
-                coordinates = StartingBoard[h,w]
+                coordinates = StartingBoard[h, w]
                     ? coordinates.Append(new Coordinate(computedRow(h), computedColumn(w)))
                     : coordinates;
             }
@@ -101,14 +109,20 @@
         return rowIsZero || columnIsZero;
     }
 
-    public void begin()
+    public async Task begin()
     {
+        gameIsStarting = true;
         var jsonBoard = DefaultGames[selectedDefaultGame];
         var startingBoard = JsonSerializer.Deserialize<IEnumerable<Coordinate>>(jsonBoard);
-        var endingBoard = GameSolver.Solve(startingBoard, NumGenerations);
-
-        game.StartGame(startingBoard, NumGenerations, endingBoard);
-
-        NavManager.NavigateTo("/");
+        Task.Run<IEnumerable<Coordinate>>(() =>
+        {
+            var endingBoard = GameSolver.Solve(startingBoard, NumGenerations, batchSize: NumGenerations);
+            return endingBoard;
+        }).ContinueWith((t) =>
+        {
+            var endingBoard = t.Result;
+            game.StartGame(startingBoard, NumGenerations, endingBoard);
+            NavManager.NavigateTo("/leaderboard");
+        }).ConfigureAwait(true);
     }
 }

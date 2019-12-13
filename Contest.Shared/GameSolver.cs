@@ -7,18 +7,23 @@ namespace Contest.Shared
 {
     public class GameSolver
     {
-        public static IEnumerable<Coordinate> Solve(IEnumerable<Coordinate> startingBoard, long numGenerations)
+        public static IEnumerable<Coordinate> Solve(IEnumerable<Coordinate> startingBoard, long numGenerations, int batchSize=50)
         {
             var resultBoard = new List<Coordinate>(startingBoard);
 
-            for (long generation = numGenerations; generation > 0; generation--)
+            for(long generation = 0; generation < numGenerations; generation++)
             {
                 Console.Write($"{generation} ");
                 resultBoard = doGeneration(resultBoard);
+
+                if (generation % batchSize == 0)
+                    GenerationBatchCompleted?.Invoke(null, new SolverEventArgs(generation));
             }
 
             return resultBoard;
         }
+
+        public static event EventHandler<SolverEventArgs> GenerationBatchCompleted;
 
         private static List<Coordinate> doGeneration(List<Coordinate> board)
         {
@@ -66,5 +71,15 @@ namespace Contest.Shared
                 neighbors++;
             return neighbors;
         }
+    }
+
+    public class SolverEventArgs : EventArgs
+    {
+        public SolverEventArgs(long generationsComputed)
+        {
+            GenerationsComputed = generationsComputed;
+        }
+
+        public long GenerationsComputed { get; set; }
     }
 }

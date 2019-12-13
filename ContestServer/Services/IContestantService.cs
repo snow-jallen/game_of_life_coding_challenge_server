@@ -12,7 +12,7 @@ namespace ContestServer.Services
         void AddContestant(Contestant contestant);
         IEnumerable<Contestant> GetContestants();
         Contestant GetContestant(string token);
-        void UpdateContestantLastSeen(Contestant contestant, DateTime newLastSeen);
         void RemoveContestant(Contestant contestant);
+        void UpdateContestant(Contestant contestant, ContestantStatus contestantStatus);
     }
 }

@@ -47,14 +47,14 @@ namespace ContestServer.Services
             contestants.TryRemove(contestant.Token, out var removed);
         }
 
-        public void UpdateContestantLastSeen(Contestant contestant, DateTime newLastSeen)
+        public void UpdateContestant(Contestant contestant, ContestantStatus status)
         {
             if (contestant is null)
             {
                 throw new ArgumentNullException(nameof(contestant));
             }
 
-            var updatedContestant = new Contestant(contestant.Name, contestant.Token, newLastSeen);
+            var updatedContestant = new Contestant(contestant.Name, contestant.Token, status.LastSeen, status.GenerationsComputed, status.StatusCode);
 
             contestants.AddOrUpdate(contestant.Token, updatedContestant, (token, existing) => updatedContestant);
         }

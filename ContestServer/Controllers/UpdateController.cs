@@ -16,7 +16,7 @@ namespace ContestServer.Controllers
         private readonly IContestantService contestantService;
         private readonly ITimeService timeService;
         private readonly GameService gameService;
-        public const int UpdateRateLimitInSeconds = 5;
+        public const int UpdateRateLimitInSeconds = 1;
 
         public UpdateController(IContestantService contestantService, ITimeService timeService, GameService gameService)
         {
@@ -53,7 +53,12 @@ namespace ContestServer.Controllers
                 return response;
             }
 
-            contestantService.UpdateContestantLastSeen(contestant, timeService.Now());
+            contestantService.UpdateContestant(contestant, new ContestantStatus
+            {
+                LastSeen = timeService.Now(),
+                GenerationsComputed = request.GenerationsComputed,
+                StatusCode = request.Status
+            });
 
             var gameStatus = gameService.GetGameStatus();
 

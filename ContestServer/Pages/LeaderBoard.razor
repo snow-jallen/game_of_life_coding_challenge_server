@@ -1,28 +1,46 @@
 ﻿@page  "/leaderboard"
 @using System.Threading
 @inject GameService gameService;
+@inject IContestantService contestantService;
 <h1>Leader Board</h1>
 
 @if (status.IsStarted)
 {
     <h2>Game has started!</h2>
     <p>Computing @status.NumberGenerations generations</p>
+
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Last Seen</th>
+            <th>Generations</th>
+            <th>Status</th>
+        </tr>
+        @foreach (var contestant in contestantService.GetContestants())
+        {
+            <tr>
+                <td>@contestant.Name</td>
+                <td>@contestant.LastSeen.ToShortTimeString()</td>
+                <td>@contestant.GenerationsComputed</td>
+                <td>@contestant.StatusCode</td>
+            </tr>
+        }
+    </table>
 }
 
 @code {
     protected override void OnInitialized()
     {
         refresh();
-        var timer = new Timer(new TimerCallback(_ =>
-        {
-            InvokeAsync(refresh);
-        }), state: null, dueTime: 1_000, period: 1_000);
+        var timer = new Timer(new TimerCallback(refresh), state: null, dueTime: 500, period: 500);
     }
 
     GameStatus status;
 
-    void refresh()
+    async void refresh(object state = null)
     {
         status = gameService.GetGameStatus();
+        await InvokeAsync(()=>StateHasChanged());
+        Console.WriteLine($"refreshing leaderboard @ {DateTime.Now}");
     }
 }

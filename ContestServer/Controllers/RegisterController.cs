@@ -29,7 +29,7 @@ namespace ContestServer.Controllers
             response.Name = request.Name;
             response.Token = Guid.NewGuid().ToString();
 
-            contestantService.AddContestant(new Contestant(response.Name, response.Token, timeService.Now()));
+            contestantService.AddContestant(new Contestant(response.Name, response.Token, timeService.Now(), 0, ClientStatus.Waiting));
 
             return response;
         }
