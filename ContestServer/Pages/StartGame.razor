@@ -17,7 +17,7 @@
     else
     {
         <label>Pick a default game:</label>
-        <select @bind="selectedDefaultGame">
+        <select @bind="SelectedDefaultGame">
             @foreach (var game in DefaultGames.Keys)
             {
                 <option value="@game">@game</option>
@@ -46,8 +46,7 @@
                         else
                         {
                             <input type="checkbox"
-                                   @bind-value="StartingBoard[row, column]"
-                                   @bind-value:event="oninput">
+                                   @bind="StartingBoard[row, column]">
                         }
                     }
                 </div>
@@ -59,17 +58,38 @@
 @code {
     public Dictionary<string, string> DefaultGames = new Dictionary<string, string>(new[]
     {
+        new KeyValuePair<string, string>("", "[]"),
         new KeyValuePair<string,string>("Gosper Glider Gun", SampleGames.GosperGliderGunInitial),
         new KeyValuePair<string, string>("Left Leaning O", SampleGames.LeftLeaningO),
     });
     string selectedDefaultGame;
+    string SelectedDefaultGame
+    {
+        get { return selectedDefaultGame; }
+        set
+        {
+            selectedDefaultGame = value;
+            var coords = JsonSerializer.Deserialize<IEnumerable<Coordinate>>(DefaultGames[selectedDefaultGame]);
+
+            for (int h = 1; h <= Height; h++)
+            {
+                for (int w = 1; w <= Width; w++)
+                {
+                    var testCoord = new Coordinate(h, w);
+                    StartingBoard[h, w] = (coords.Contains(testCoord));
+                }
+            }
+            this.StateHasChanged();
+        }
+    }
+
     bool gameIsStarting = false;
     private JsonSerializerOptions options;
 
     protected override void OnInitialized()
     {
         StartingBoard = new bool[Height + 1, Width + 1];
-        selectedDefaultGame = DefaultGames.Keys.First();
+        SelectedDefaultGame = DefaultGames.Keys.First();
     }
 
     public string SeedBoard { get; set; }
