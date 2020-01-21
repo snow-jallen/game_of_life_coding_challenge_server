@@ -12,9 +12,6 @@ namespace Contest.Shared
 
         public Coordinate(int x, int y)
         {
-            if (x == 0 || y == 0)
-                throw new ArgumentOutOfRangeException("x or y", "0 values are invalid.  Must be positive or negative.");
-
             X = x;
             Y = y;
         }
@@ -50,39 +47,31 @@ namespace Contest.Shared
         }
 
         [System.Text.Json.Serialization.JsonIgnore][Newtonsoft.Json.JsonIgnore]
-        public Coordinate LowerMiddle => new Coordinate(translate(X, 0), translate(Y, -1));
+        public Coordinate LowerMiddle => new Coordinate(X, Y-1);
         [System.Text.Json.Serialization.JsonIgnore]
         [Newtonsoft.Json.JsonIgnore]
-        public Coordinate LowerRight => new Coordinate(translate(X, 1), translate(Y, -1));
+        public Coordinate LowerRight => new Coordinate(X+1, Y-1);
         [System.Text.Json.Serialization.JsonIgnore]
         [Newtonsoft.Json.JsonIgnore]
-        public Coordinate LowerLeft => new Coordinate(translate(X, -1), translate(Y, -1));
+        public Coordinate LowerLeft => new Coordinate(X-1, Y-1);
         [System.Text.Json.Serialization.JsonIgnore]
         [Newtonsoft.Json.JsonIgnore]
-        public Coordinate Right => new Coordinate(translate(X, 1), translate(Y, 0));
+        public Coordinate Right => new Coordinate(X+1, Y);
         [System.Text.Json.Serialization.JsonIgnore]
         [Newtonsoft.Json.JsonIgnore]
-        public Coordinate Left => new Coordinate(translate(X, -1), translate(Y, 0));
+        public Coordinate Left => new Coordinate(X-1, Y);
         [System.Text.Json.Serialization.JsonIgnore]
         [Newtonsoft.Json.JsonIgnore]
-        public Coordinate UpperRight => new Coordinate(translate(X, 1), translate(Y, 1));
+        public Coordinate UpperRight => new Coordinate(X+1, Y+1);
         [System.Text.Json.Serialization.JsonIgnore]
         [Newtonsoft.Json.JsonIgnore]
-        public Coordinate UpperMiddle => new Coordinate(translate(X, 0), translate(Y, 1));
+        public Coordinate UpperMiddle => new Coordinate(X, Y+1);
         [System.Text.Json.Serialization.JsonIgnore]
         [Newtonsoft.Json.JsonIgnore]
-        public Coordinate UpperLeft => new Coordinate(translate(X, -1), translate(Y, 1));
+        public Coordinate UpperLeft => new Coordinate(X-1, Y+1);
         [System.Text.Json.Serialization.JsonIgnore]
         [Newtonsoft.Json.JsonIgnore]
         public IEnumerable<Coordinate> Neighbors => new[] { LowerMiddle, LowerRight, LowerLeft, Right, Left, UpperRight, UpperMiddle, UpperLeft };
-
-        private int translate(int orig, int change)
-        {
-            var newVal = orig + change;
-            if (newVal == 0)
-                newVal = newVal + change;
-            return newVal;
-        }
 
         public override bool Equals(object obj)
         {

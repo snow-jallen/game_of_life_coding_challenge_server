@@ -24,16 +24,9 @@
                 {
                     var row = h;
                     var column = w;
-                    if(@RowOrColumnIsZero(row, column))
-                    {
-                        <input type="checkbox" disabled >
-                    }
-                    else
-                    {
-                        <input type="checkbox"
-                            @bind-value="StartingBoard[row, column]"
-                            @bind-value:event="oninput">
-                    }
+                    <input type="checkbox"
+                        @bind-value="StartingBoard[row, column]"
+                        @bind-value:event="oninput">
                 }
             </div>
         }
@@ -77,13 +70,6 @@
             }
         }
         return JsonSerializer.Serialize(coordinates);
-    }
-
-    public bool RowOrColumnIsZero(int row, int column)
-    {
-        bool rowIsZero = computedRow(row) == 0;
-        bool columnIsZero = computedColumn(column) == 0;
-        return rowIsZero || columnIsZero;
     }
 
     public void solve()

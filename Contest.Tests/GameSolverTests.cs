@@ -13,17 +13,17 @@ namespace Contest.Tests
     [TestFixture]
     public class GameSolverTests
     {
-        const string stillLifeII = "(1,1);(2,1);(2,-1);(2,-2);(2,-3);(1,-3);(4,1);(5,1);(4,-1);(4,-2);(4,-3);(5,-3)";
+        const string stillLifeII = "(1,1);(2,1);(2,0);(2,-1);(2,-2);(1,-2);(4,1);(5,1);(4,0);(4,-1);(4,-2);(5,-2)";
         const string diagonalS = "[{\"X\":1,\"Y\":1},{\"X\":1,\"Y\":2},{\"X\":2,\"Y\":1},{\"X\":2,\"Y\":3},{\"X\":3,\"Y\":3},{\"X\":4,\"Y\":3},{\"X\":4,\"Y\":5},{\"X\":5,\"Y\":4},{\"X\":5,\"Y\":5}]";
-        const string leftLeaningO = "[{\"X\":-2,\"Y\":3},{\"X\":-2,\"Y\":4},{\"X\":-1,\"Y\":2},{\"X\":-1,\"Y\":5},{\"X\":1,\"Y\":1},{\"X\":1,\"Y\":4},{\"X\":2,\"Y\":2},{\"X\":2,\"Y\":3}]";
+        const string leftLeaningO = "[{\"X\":-1,\"Y\":3},{\"X\":-1,\"Y\":4},{\"X\":0,\"Y\":2},{\"X\":0,\"Y\":5},{\"X\":1,\"Y\":1},{\"X\":1,\"Y\":4},{\"X\":2,\"Y\":2},{\"X\":2,\"Y\":3}]";
 
-        const string gosperGliderGun43rdGen = "[{\"X\":6,\"Y\":-3},{\"X\":6,\"Y\":-2},{\"X\":6,\"Y\":-1},{\"X\":7,\"Y\":-1},{\"X\":8,\"Y\":-2},{\"X\":12,\"Y\":-21},{\"X\":12,\"Y\":-12},{\"X\":12,\"Y\":-9},{\"X\":13,\"Y\":-22},{\"X\":13,\"Y\":-20},{\"X\":13,\"Y\":-9},{\"X\":14,\"Y\":-24},{\"X\":14,\"Y\":-23},{\"X\":14,\"Y\":-19},{\"X\":14,\"Y\":-13},{\"X\":14,\"Y\":-12},{\"X\":14,\"Y\":-8},{\"X\":14,\"Y\":-5},{\"X\":15,\"Y\":-29},{\"X\":15,\"Y\":-28},{\"X\":15,\"Y\":-24},{\"X\":15,\"Y\":-23},{\"X\":15,\"Y\":-19},{\"X\":15,\"Y\":-14},{\"X\":15,\"Y\":-12},{\"X\":15,\"Y\":-10},{\"X\":15,\"Y\":-9},{\"X\":15,\"Y\":-5},{\"X\":15,\"Y\":-4},{\"X\":15,\"Y\":-3},{\"X\":15,\"Y\":-2},{\"X\":16,\"Y\":-29},{\"X\":16,\"Y\":-28},{\"X\":16,\"Y\":-24},{\"X\":16,\"Y\":-23},{\"X\":16,\"Y\":-19},{\"X\":16,\"Y\":-4},{\"X\":16,\"Y\":-3},{\"X\":16,\"Y\":-2},{\"X\":16,\"Y\":-1},{\"X\":17,\"Y\":-22},{\"X\":17,\"Y\":-20},{\"X\":17,\"Y\":-14},{\"X\":17,\"Y\":-13},{\"X\":17,\"Y\":-4},{\"X\":17,\"Y\":-1},{\"X\":17,\"Y\":6},{\"X\":17,\"Y\":7},{\"X\":18,\"Y\":-21},{\"X\":18,\"Y\":-4},{\"X\":18,\"Y\":-3},{\"X\":18,\"Y\":-2},{\"X\":18,\"Y\":-1},{\"X\":18,\"Y\":6},{\"X\":18,\"Y\":7},{\"X\":19,\"Y\":-5},{\"X\":19,\"Y\":-4},{\"X\":19,\"Y\":-3},{\"X\":19,\"Y\":-2},{\"X\":20,\"Y\":-5}]";
+        const string gosperGliderGun43rdGen = "[{\"X\":6,\"Y\":-2},{\"X\":6,\"Y\":-1},{\"X\":6,\"Y\":0},{\"X\":7,\"Y\":0},{\"X\":8,\"Y\":-1},{\"X\":12,\"Y\":-20},{\"X\":12,\"Y\":-11},{\"X\":12,\"Y\":-8},{\"X\":13,\"Y\":-21},{\"X\":13,\"Y\":-19},{\"X\":13,\"Y\":-8},{\"X\":14,\"Y\":-23},{\"X\":14,\"Y\":-22},{\"X\":14,\"Y\":-18},{\"X\":14,\"Y\":-12},{\"X\":14,\"Y\":-11},{\"X\":14,\"Y\":-7},{\"X\":14,\"Y\":-4},{\"X\":15,\"Y\":-28},{\"X\":15,\"Y\":-27},{\"X\":15,\"Y\":-23},{\"X\":15,\"Y\":-22},{\"X\":15,\"Y\":-18},{\"X\":15,\"Y\":-13},{\"X\":15,\"Y\":-11},{\"X\":15,\"Y\":-9},{\"X\":15,\"Y\":-8},{\"X\":15,\"Y\":-4},{\"X\":15,\"Y\":-3},{\"X\":15,\"Y\":-2},{\"X\":15,\"Y\":-1},{\"X\":16,\"Y\":-28},{\"X\":16,\"Y\":-27},{\"X\":16,\"Y\":-23},{\"X\":16,\"Y\":-22},{\"X\":16,\"Y\":-18},{\"X\":16,\"Y\":-3},{\"X\":16,\"Y\":-2},{\"X\":16,\"Y\":-1},{\"X\":16,\"Y\":0},{\"X\":17,\"Y\":-21},{\"X\":17,\"Y\":-19},{\"X\":17,\"Y\":-13},{\"X\":17,\"Y\":-12},{\"X\":17,\"Y\":-3},{\"X\":17,\"Y\":0},{\"X\":17,\"Y\":6},{\"X\":17,\"Y\":7},{\"X\":18,\"Y\":-19},{\"X\":18,\"Y\":-3},{\"X\":18,\"Y\":-2},{\"X\":18,\"Y\":-1},{\"X\":18,\"Y\":0},{\"X\":18,\"Y\":6},{\"X\":18,\"Y\":7},{\"X\":19,\"Y\":-4},{\"X\":19,\"Y\":-3},{\"X\":19,\"Y\":-2},{\"X\":19,\"Y\":-1},{\"X\":20,\"Y\":-4}]";
 
         [TestCase("(1,1)", "", 1, "Any live cell with fewer than two live neighbors dies as if by underpopulation (0 neighbors)")]
         [TestCase("(1,1);(1,2)", "", 1, "Any live cell with fewer than two live neighbors dies as if by underpopulation (1 neighbor)")]
         [TestCase("(1,1);(1,2);(2,1)", "(1,1);(1,2);(2,1);(2,2)", 1, "Any live cell with two or three live neighbors lives on to the next generation (2 neigbors)")]
         [TestCase("(1,1);(1,2);(2,1);(2,2)", "(1,1);(1,2);(2,1);(2,2)", 1, "Any live cell with two or three live neighbors lives on to the next generation (3 neigbors)")]
-        [TestCase("(-1,2);(1,1);(1,2);(2,1);(2,2)", "(-1,2);(-1,1);(1,3);(2,1);(2,2)", 1, "Any live cell with more than three live neighbors dies, as if by overpopulation")]
+        [TestCase("(0,2);(1,1);(1,2);(2,1);(2,2)", "(0,2);(0,1);(1,3);(2,1);(2,2)", 1, "Any live cell with more than three live neighbors dies, as if by overpopulation")]
         [TestCase("(1,1);(3,1);(2,3)","(2,2)", 1, "Any dead cell with exactly three live neighbors becomes a live cell, as if by reproduction")]
         [TestCase(stillLifeII, stillLifeII, 555,"stillLifeII doesn't ever change")]
         public void SolveBoard(string seed, string result, int numGenerations, string reason)
@@ -44,9 +44,17 @@ namespace Contest.Tests
             var seedBoard = JsonSerializer.Deserialize<IEnumerable<Coordinate>>(seed);
             var expectedResult = JsonSerializer.Deserialize<IEnumerable<Coordinate>>(result);
 
+
             var actualResult = GameSolver.Solve(seedBoard, numGenerations);
 
-            expectedResult.Should().BeEquivalentTo(actualResult, because: reason);
+            Console.WriteLine();
+            
+            Console.WriteLine(JsonSerializer.Serialize(expectedResult));
+            Console.WriteLine(JsonSerializer.Serialize(actualResult));
+
+            Console.WriteLine(expectedResult.SequenceEqual(actualResult));
+            
+            expectedResult.Should().BeEquivalentTo(actualResult, reason);
         }
 
         [TestCase("(1,1);(1,2)", 1, Description = "1 neighbor")]
@@ -63,14 +71,14 @@ namespace Contest.Tests
         public void UpperLeftFrom1_1()
         {
             var starting = new Coordinate(1, 1);
-            Assert.AreEqual(starting.UpperLeft, new Coordinate(-1, 2));
+            Assert.AreEqual(starting.UpperLeft, new Coordinate(0, 2));
         }
 
         [Test]
         public void LowerRightFrom1_1()
         {
             var starting = new Coordinate(1, 1);
-            Assert.AreEqual(starting.LowerRight, new Coordinate(2, -1));
+            Assert.AreEqual(starting.LowerRight, new Coordinate(2, 0));
         }
     }
 

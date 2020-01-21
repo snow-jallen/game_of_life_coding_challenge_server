@@ -48,18 +48,18 @@ namespace Contest.Tests
             response.ErrorMessage.Should().Contain("not a registered player");
         }
 
-        [Test]
-        public void TooFrequentRequestFails()
-        {
-            timeServiceMock.Setup(m => m.Now()).Returns(time2);
+        // [Test]
+        // public void TooFrequentRequestFails()
+        // {
+        //     timeServiceMock.Setup(m => m.Now()).Returns(time2);
 
-            var response1 = updateController.Post(new UpdateRequest { Token = "1234" });
-            response1.IsError.Should().BeFalse("first update is ok");
+        //     var response1 = updateController.Post(new UpdateRequest { Token = "1234" });
+        //     response1.IsError.Should().BeFalse("first update is ok");
 
-            timeServiceMock.Setup(m => m.Now()).Returns(time2a);
-            var response2 = updateController.Post(new UpdateRequest { Token = "1234" });
-            response2.IsError.Should().BeTrue("another call to update too soon after the first would violate the rate limit.");
-            response2.ErrorMessage.Should().Contain("rate limit");
-        }
+        //     timeServiceMock.Setup(m => m.Now()).Returns(time2a);
+        //     var response2 = updateController.Post(new UpdateRequest { Token = "1234" });
+        //     response2.IsError.Should().BeTrue("another call to update too soon after the first would violate the rate limit.");
+        //     response2.ErrorMessage.Should().Contain("rate limit");
+        // }
     }
 }
