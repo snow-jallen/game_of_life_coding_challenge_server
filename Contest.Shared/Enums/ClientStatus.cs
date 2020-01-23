@@ -12,6 +12,7 @@ namespace Contest.Shared.Enums
     {
         Waiting,
         Processing,
-        Complete
+        Complete,
+        Stale
     }
 }

@@ -57,31 +57,33 @@ else
 @code {
     const int UserExpirationInSeconds = 60;
 
-    public IEnumerable<Contestant>
-    Contestants { get; private set; }
+    public IEnumerable<Contestant> Contestants { get; private set; }
 
     protected override async Task OnInitializedAsync()
     {
-        updateContestants();
-        var timer = new Timer(new TimerCallback(_ =>
+        await updateContestants();
+        var timer = new Timer(new TimerCallback(async _ =>
         {
-            InvokeAsync(updateContestants);
-        }), state: null, dueTime: 2_000, period: 2_000);
+            await InvokeAsync(updateContestants);
+        }), state: null, dueTime: 2_000, period: 2_000);        
     }
 
-    private void updateContestants()
+    private async Task<bool> updateContestants()
     {
-        var allContestants = contestantService.GetContestants();
-        var staleContestants = from c in allContestants
-                               where c.LastSeen.AddSeconds(UserExpirationInSeconds) < timeService.Now()
-                               select c;
+        return await Task.Run<bool>(() => {
+            Contestants = contestantService.GetContestants();
+            StateHasChanged();
+            return true;
+        });
+        // var staleContestants = from c in allContestants
+        //                        where c.LastSeen.AddSeconds(UserExpirationInSeconds) < timeService.Now()
+        //                        select c;
+// 
+        // foreach (var staleContestant in staleContestants)
+        // {
+        //     contestantService.RemoveContestant(staleContestant);
+        // }
 
-        foreach (var staleContestant in staleContestants)
-        {
-            contestantService.RemoveContestant(staleContestant);
-        }
-
-        Contestants = allContestants.Except(staleContestants);
-        StateHasChanged();
+        // Contestants = allContestants.Except(staleContestants);
     }
 }

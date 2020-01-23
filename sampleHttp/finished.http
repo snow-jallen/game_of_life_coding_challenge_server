@@ -1,0 +1,14 @@
+POST https://localhost:5001/update
+content-type: application/json
+
+{
+    "token": "9f1296b7-6e6a-4cbb-a88e-5a5b3b81ad67",
+    "clientStatus": "Complete",
+    "GenerationsComputed": 10,
+    "ResultBoard": [
+        {
+            "x": 1,
+            "y": 1
+        }
+    ]
+}

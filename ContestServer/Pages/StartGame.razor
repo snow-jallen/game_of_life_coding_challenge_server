@@ -121,7 +121,7 @@
         gameIsStarting = true;
         var jsonBoard = DefaultGames[selectedDefaultGame];
         var startingBoard = JsonSerializer.Deserialize<IEnumerable<Coordinate>>(jsonBoard);
-        Task.Run<IEnumerable<Coordinate>>(() =>
+        await Task.Run<IEnumerable<Coordinate>>(() =>
         {
             var endingBoard = GameSolver.Solve(startingBoard, NumGenerations, batchSize: NumGenerations);
             return endingBoard;
