@@ -1,4 +1,5 @@
 ﻿using Contest.Shared;
+using Contest.Shared.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

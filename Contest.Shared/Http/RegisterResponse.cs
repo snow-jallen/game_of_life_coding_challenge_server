@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Contest.Shared
+namespace Contest.Shared.Http
 {
-    public class RegisterRequest
+    public class RegisterResponse
     {
+        public string Token { get; set; }
         public string Name { get; set; }
     }
 }

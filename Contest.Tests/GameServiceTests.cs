@@ -1,4 +1,5 @@
 ﻿using Contest.Shared;
+using Contest.Shared.Models;
 using ContestServer.Services;
 using FluentAssertions;
 using NUnit.Framework;

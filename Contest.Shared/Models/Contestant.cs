@@ -1,7 +1,7 @@
 ﻿using System;
 using Contest.Shared.Enums;
 
-namespace Contest.Shared
+namespace Contest.Shared.Models
 {
     public class Contestant
     {

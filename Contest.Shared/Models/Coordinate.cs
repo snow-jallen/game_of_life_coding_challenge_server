@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace Contest.Shared
+namespace Contest.Shared.Models
 {
     //[JsonConverter(typeof(CoordinateConverter))]
     public class Coordinate : IEquatable<Coordinate>

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Contest.Shared.Enums;
 
-namespace Contest.Shared
+namespace Contest.Shared.Models
 {
     public class ContestantStatus
     {

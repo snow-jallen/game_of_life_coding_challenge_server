@@ -1,4 +1,5 @@
 ﻿using Contest.Shared.Enums;
+using Contest.Shared.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
@@ -7,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Contest.Shared
+namespace Contest.Shared.Http
 {
     public class UpdateResponse
     {

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Contest.Shared;
 using Contest.Shared.Enums;
+using Contest.Shared.Http;
+using Contest.Shared.Models;
 using ContestServer.Services;
 using Microsoft.AspNetCore.Mvc;
 

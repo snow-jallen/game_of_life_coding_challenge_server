@@ -1,5 +1,7 @@
 using Contest.Shared;
 using Contest.Shared.Enums;
+using Contest.Shared.Http;
+using Contest.Shared.Models;
 using ContestServer.Controllers;
 using ContestServer.Services;
 using FluentAssertions;

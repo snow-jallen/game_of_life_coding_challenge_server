@@ -1,4 +1,5 @@
 ﻿using Contest.Shared;
+using Contest.Shared.Http;
 using Refit;
 using System;
 using System.Collections.Generic;

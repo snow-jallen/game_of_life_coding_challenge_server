@@ -7,6 +7,7 @@ using System.Text;
 using FluentAssertions;
 using FluentAssertions.Specialized;
 using System.Text.Json;
+using Contest.Shared.Models;
 
 namespace Contest.Tests
 {
