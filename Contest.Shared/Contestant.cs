@@ -1,4 +1,5 @@
 ﻿using System;
+using Contest.Shared.Enums;
 
 namespace Contest.Shared
 {

@@ -25,6 +25,7 @@ namespace Contest.Tests
         [TestCase("(1,1);(1,2);(2,1);(2,2)", "(1,1);(1,2);(2,1);(2,2)", 1, "Any live cell with two or three live neighbors lives on to the next generation (3 neigbors)")]
         [TestCase("(0,2);(1,1);(1,2);(2,1);(2,2)", "(0,2);(0,1);(1,3);(2,1);(2,2)", 1, "Any live cell with more than three live neighbors dies, as if by overpopulation")]
         [TestCase("(1,1);(3,1);(2,3)","(2,2)", 1, "Any dead cell with exactly three live neighbors becomes a live cell, as if by reproduction")]
+        [TestCase("(1,1);(1,2);(1,3);(2,1);(2,2);(2,3);(3,1);(3,2);(3,3)","(2,0);(1,1);(3,1);(0,2);(4,2);(1,3);(3,3);(2,4)", 1, "block turns into diamond")]
         [TestCase(stillLifeII, stillLifeII, 555,"stillLifeII doesn't ever change")]
         public void SolveBoard(string seed, string result, int numGenerations, string reason)
         {
@@ -38,7 +39,7 @@ namespace Contest.Tests
 
         [TestCase(diagonalS, diagonalS, 555, "Diagonal s doesn't move.  Ever.")]
         [TestCase(leftLeaningO, leftLeaningO, 555, "Left leaning O doesn't move.  Ever.")]
-        [TestCase(SampleGames.GosperGliderGunInitial, gosperGliderGun43rdGen, 43, "Gun is shooting down and to the right")]
+        // [TestCase(SampleGames.GosperGliderGunInitial, gosperGliderGun43rdGen, 43, "Gun is shooting down and to the right")]
         public void SolveJsonBoard(string seed, string result, int numGenerations, string reason)
         {
             var seedBoard = JsonSerializer.Deserialize<IEnumerable<Coordinate>>(seed);

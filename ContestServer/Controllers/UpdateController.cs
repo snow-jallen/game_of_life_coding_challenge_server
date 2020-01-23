@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Contest.Shared;
+using Contest.Shared.Enums;
 using ContestServer.Services;
 using Microsoft.AspNetCore.Mvc;
 

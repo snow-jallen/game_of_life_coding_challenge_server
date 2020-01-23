@@ -46,7 +46,8 @@ namespace Contest.Shared
             throw new ArgumentOutOfRangeException(nameof(serialized), "Unable to parse x and y");
         }
 
-        [System.Text.Json.Serialization.JsonIgnore][Newtonsoft.Json.JsonIgnore]
+        [System.Text.Json.Serialization.JsonIgnore]
+        [Newtonsoft.Json.JsonIgnore]
         public Coordinate LowerMiddle => new Coordinate(X, Y-1);
         [System.Text.Json.Serialization.JsonIgnore]
         [Newtonsoft.Json.JsonIgnore]

@@ -1,4 +1,5 @@
 ﻿using Contest.Shared;
+using Contest.Shared.Enums;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;

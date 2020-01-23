@@ -3,5 +3,6 @@ content-type: application/json
 
 {
     "token": "6838ab09-c57d-4a97-9113-c0f4c00dd5be",
-    "clientStatus": "waiting"
+    "clientStatus": "Processing",
+    "GenerationsComputed": 10
 }

@@ -1,4 +1,5 @@
 using Contest.Shared;
+using Contest.Shared.Enums;
 using ContestServer.Controllers;
 using ContestServer.Services;
 using FluentAssertions;

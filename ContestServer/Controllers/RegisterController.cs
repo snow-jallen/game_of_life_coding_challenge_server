@@ -1,4 +1,5 @@
 ﻿using Contest.Shared;
+using Contest.Shared.Enums;
 using ContestServer.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;

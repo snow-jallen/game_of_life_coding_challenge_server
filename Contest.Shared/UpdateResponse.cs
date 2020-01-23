@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Contest.Shared.Enums;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
@@ -15,19 +16,5 @@ namespace Contest.Shared
         public IEnumerable<Coordinate> SeedBoard { get; set; }
         public bool IsError { get; set; }
         public string ErrorMessage { get; set; }
-    }
-
-    public enum GameState
-    {
-        NotStarted,
-        InProgress,
-        Over
-    }
-
-    public enum ClientStatus
-    {
-        Waiting,
-        Processing,
-        Complete
     }
 }
