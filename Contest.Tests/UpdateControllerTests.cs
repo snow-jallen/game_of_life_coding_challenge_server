@@ -13,6 +13,7 @@ namespace Contest.Tests
 {
     public class UpdateControllerTests
     {
+        private Mock<IGameService> gameService;
         private IContestantService contestantService;
         private UpdateController updateController;
         private Mock<ITimeService> timeServiceMock;
@@ -25,7 +26,8 @@ namespace Contest.Tests
         [SetUp]
         public void Setup()
         {
-            contestantService = new InMemoryContestantService();
+            gameService = new Mock<IGameService>();
+            contestantService = new InMemoryContestantService(gameService.Object);
             timeServiceMock = new Mock<ITimeService>();
             timeServiceMock.Setup(m => m.Now()).Returns(time1);
 
@@ -46,7 +48,7 @@ namespace Contest.Tests
         [Test]
         public void UnrecognizedContestantFails()
         {
-            var response = updateController.Post(new UpdateRequest{Token = "bogus"});
+            var response = updateController.Post(new UpdateRequest{ Token = "bogus"});
             response.IsError.Should().BeTrue();
             response.ErrorMessage.Should().Contain("not a registered player");
         }

@@ -7,9 +7,12 @@ using System.Threading.Tasks;
 
 namespace ContestServer.Services
 {
-    public class GameService
+
+
+    public class GameService : IGameService
     {
         private GameStatus gameStatus;
+        private long numberGenerations { get; set; }
         public IEnumerable<Coordinate> endingBoard;
 
         public GameService()
@@ -23,6 +26,7 @@ namespace ContestServer.Services
         {
             gameStatus = new GameStatus(seed, numGenerations);
             this.endingBoard = endingBoard;
+            this.numberGenerations = numGenerations;
         }
 
         public void EndGame()
@@ -33,6 +37,11 @@ namespace ContestServer.Services
         public bool CheckBoard(IEnumerable<Coordinate> submittedBoard)
         {
             return endingBoard.All(submittedBoard.Contains);
+        }
+
+        public long GetNumGenerations()
+        {
+            return numberGenerations;
         }
     }
 

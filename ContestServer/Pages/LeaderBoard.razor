@@ -1,6 +1,6 @@
 ﻿@page  "/leaderboard"
 @using System.Threading
-@inject GameService gameService;
+@inject IGameService gameService;
 @inject IContestantService contestantService;
 <h1>Leader Board</h1>
 
@@ -14,8 +14,8 @@
             <th>Name</th>
             <th>Last Seen</th>
             <th>Generations</th>
-            <th>Status</th>
             <th>Elapsed</th>
+            <th>CorrectAns</th>
         </tr>
         @foreach (var contestant in contestantService.GetContestants())
         {

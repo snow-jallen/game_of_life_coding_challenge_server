@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Contest.Shared.Enums;
 
 namespace Contest.Shared.Models
@@ -12,6 +13,7 @@ namespace Contest.Shared.Models
             long? generationsComputed, 
             DateTime? startedGameAt=null, 
             DateTime? endedGameAt=null,
+            IEnumerable<Coordinate> finalBoard=null,
             bool? correctFinalBoard=false)
         {
             Name = name;
@@ -20,6 +22,7 @@ namespace Contest.Shared.Models
             GenerationsComputed = generationsComputed;
             StartedGameAt = startedGameAt;
             EndedGameAt = endedGameAt;
+            FinalBoard=finalBoard;
             CorrectFinalBoard = correctFinalBoard;
         }
 
@@ -38,6 +41,7 @@ namespace Contest.Shared.Models
                 return EndedGameAt - StartedGameAt;
             }
         }
+        public IEnumerable<Coordinate> FinalBoard { get; }
         public bool? CorrectFinalBoard { get; }
     }
 }

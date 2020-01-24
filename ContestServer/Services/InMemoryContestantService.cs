@@ -14,9 +14,12 @@ namespace ContestServer.Services
     {
         private ConcurrentDictionary<string, Contestant> contestants;
 
-        public InMemoryContestantService()
+        public IGameService GameService { get; }
+
+        public InMemoryContestantService(IGameService gameService)
         {
             contestants = new ConcurrentDictionary<string, Contestant>();
+            GameService = gameService;
         }
 
         public void AddContestant(Contestant contestant)
@@ -25,13 +28,29 @@ namespace ContestServer.Services
             {
                 throw new ArgumentNullException(nameof(contestant));
             }
+            if (nameIsDuplicate(contestant))
+            {
+                throw new ArgumentException("cannot add contestant with existing name");
+            }
 
             contestants.TryAdd(contestant.Token, contestant);
         }
 
-        public Contestant GetContestant(string token)
+        private bool nameIsDuplicate(Contestant contestant)
         {
-            return contestants.GetValueOrDefault(token);
+            var countNames = contestants.Values.Where(c => c.Name == contestant.Name).Count();
+            return countNames > 0;
+        }
+
+        public bool ContestantExists(string token)
+        {
+            var tokenCount = contestants.Values.Where(c => c.Token == token).Count();
+            return tokenCount > 0;
+        }
+
+        public Contestant GetContestantByToken(string token)
+        {
+            return contestants.Values.First(c => c.Token == token);
         }
 
         public IEnumerable<Contestant> GetContestants()
@@ -56,25 +75,30 @@ namespace ContestServer.Services
                 throw new ArgumentNullException(nameof(contestant));
             }
 
-            var startedGameAt = contestant.StartedGameAt;
-            // //if contestant was at 0 generations and is now greater than 0 generations
-            // if (contestant.StatusCode == ClientStatus.Waiting && status.StatusCode == ClientStatus.Processing)
-            //     startedGameAt = DateTime.Now;
+            
 
-            var endedGameAt = contestant.EndedGameAt;
-            // // if contestant was at < all generations and is now at all generations
-            // if (contestant.StatusCode == ClientStatus.Processing && status.StatusCode == ClientStatus.Complete)
-            //     endedGameAt = DateTime.Now;
+            if(contestant.GenerationsComputed == GameService.GetNumGenerations())
+            {
+                contestant = checkContestantBoard(contestant);
+            }
 
-            var updatedContestant = new Contestant(
+            contestants.AddOrUpdate(contestant.Token, contestant, (token, existing) => contestant);
+        }
+
+        private Contestant checkContestantBoard(Contestant contestant)
+        {
+            if(contestant.FinalBoard == null)
+                throw new ArgumentNullException("Final Board Cannot be null at last generation");
+            return new Contestant(
                 contestant.Name,
                 contestant.Token,
                 contestant.LastSeen,
                 contestant.GenerationsComputed,
-                startedGameAt,
-                endedGameAt);
-
-            contestants.AddOrUpdate(contestant.Token, updatedContestant, (token, existing) => updatedContestant);
+                contestant.StartedGameAt,
+                contestant.EndedGameAt,
+                contestant.FinalBoard,
+                GameService.CheckBoard(contestant.FinalBoard)
+            );
         }
     }
 }

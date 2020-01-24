@@ -34,7 +34,7 @@ namespace ContestServer
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<IContestantService, InMemoryContestantService>();
-            services.AddSingleton<GameService>();
+            services.AddSingleton<IGameService, GameService>();
             services.AddSingleton<ITimeService, TimeService>();
         }
 

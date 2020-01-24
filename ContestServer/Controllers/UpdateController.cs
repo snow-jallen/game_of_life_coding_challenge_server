@@ -19,10 +19,10 @@ namespace ContestServer.Controllers
     {
         private readonly IContestantService contestantService;
         private readonly ITimeService timeService;
-        private readonly GameService gameService;
+        private readonly IGameService gameService;
         public const int UpdateRateLimitInSeconds = 1;
 
-        public UpdateController(IContestantService contestantService, ITimeService timeService, GameService gameService)
+        public UpdateController(IContestantService contestantService, ITimeService timeService, IGameService gameService)
         {
             this.contestantService = contestantService ?? throw new ArgumentNullException(nameof(contestantService));
             this.timeService = timeService ?? throw new ArgumentNullException(nameof(timeService));
@@ -41,7 +41,14 @@ namespace ContestServer.Controllers
                 return response;
             }
 
-            var contestant = contestantService.GetContestant(request.Token);
+            if(!contestantService.ContestantExists(request.Token))
+            {
+                response.IsError = true;
+                response.ErrorMessage = "You are not a registered player.  Register to play at /register";
+                return response;
+            }
+
+            var contestant = contestantService.GetContestantByToken(request.Token);
 
             if(contestant == null)
             {
@@ -66,7 +73,8 @@ namespace ContestServer.Controllers
                 contestant.LastSeen,
                 request.GenerationsComputed,
                 contestant.StartedGameAt,
-                contestant.EndedGameAt
+                contestant.EndedGameAt,
+                request.ResultBoard
             );
             contestantService.UpdateContestant(contestant);
 

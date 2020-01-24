@@ -12,8 +12,9 @@ namespace ContestServer.Services
     {
         void AddContestant(Contestant contestant);
         IEnumerable<Contestant> GetContestants();
-        Contestant GetContestant(string token);
+        Contestant GetContestantByToken(string token);
         void RemoveContestant(Contestant contestant);
         void UpdateContestant(Contestant contestant);
+        bool ContestantExists(string token);
     }
 }
