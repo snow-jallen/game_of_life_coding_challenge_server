@@ -2,7 +2,7 @@ POST https://localhost:5001/update
 content-type: application/json
 
 {
-    "token": "c53a2c65-6550-4ae2-b04b-8431487d9b1c",
-    "clientStatus": "Processing",
+    "token": "595ebd17-f35e-4fc3-9d90-6e1a3d774b55",
+    "Status": "Processing",
     "GenerationsComputed": 30
 }

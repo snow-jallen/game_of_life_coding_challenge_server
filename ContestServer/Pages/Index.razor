@@ -61,11 +61,11 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        await updateContestants();
+        Contestants = new Contestant[]{};
         var timer = new Timer(new TimerCallback(async _ =>
         {
-            await InvokeAsync(updateContestants);
-        }), state: null, dueTime: 2_000, period: 2_000);        
+            InvokeAsync(updateContestants);
+        }), state: null, dueTime: 0, period: 2_000);        
     }
 
     private async Task<bool> updateContestants()

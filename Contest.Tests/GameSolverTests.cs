@@ -56,7 +56,7 @@ namespace Contest.Tests
 
             Console.WriteLine(expectedResult.SequenceEqual(actualResult));
             
-            expectedResult.Should().BeEquivalentTo(actualResult, reason);
+            expectedResult.All(actualResult.Contains).Should().BeTrue(reason);
         }
 
         [TestCase("(1,1);(1,2)", 1, Description = "1 neighbor")]

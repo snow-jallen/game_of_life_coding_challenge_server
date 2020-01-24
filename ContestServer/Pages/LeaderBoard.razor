@@ -43,18 +43,15 @@
     protected override void OnInitialized()
     {
         refresh();
-        var timer = new Timer(new TimerCallback(async _ => 
-        {
-            await InvokeAsync(refresh);
-        }), state: null, dueTime: 500, period: 500);
+        var timer = new Timer(new TimerCallback(refresh), state: null, dueTime: 500, period: 500);
     }
 
     GameStatus status;
 
-    async Task refresh()
+    async void refresh(object state = null)
     {
         status = gameService.GetGameStatus();
-        StateHasChanged();
+        await InvokeAsync(()=>StateHasChanged());
         Console.WriteLine($"refreshing leaderboard @ {DateTime.Now}");
     }
 

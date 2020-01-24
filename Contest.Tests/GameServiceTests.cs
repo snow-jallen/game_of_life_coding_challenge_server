@@ -35,6 +35,44 @@ namespace Contest.Tests
             gameStatus.IsStarted.Should().BeTrue();
         }
 
+        [Test]
+        public void CheckBoardVerifysSolutionAccuracy()
+        {
+            var gameService = new GameService();
+            gameService.endingBoard = new Coordinate[]
+            {
+                new Coordinate(1, 1),
+                new Coordinate(1, 2),
+                new Coordinate(0, 1)
+            };
+            var submittedBoard = new Coordinate[]
+            {
+                new Coordinate(1, 2),
+                new Coordinate(1, 1),
+                new Coordinate(0, 1)
+            };
+
+            gameService.CheckBoard(submittedBoard).Should().BeTrue();
+        }
+
+        [Test]
+        public void CheckBoardRejectsBadBoards()
+        {
+            var gameService = new GameService();
+            gameService.endingBoard = new Coordinate[]
+            {
+                new Coordinate(1, 1),
+                new Coordinate(1, 2),
+                new Coordinate(0, 1)
+            };
+            var submittedBoard = new Coordinate[]
+            {
+                new Coordinate(1, 1),
+                new Coordinate(0, 1)
+            };
+
+            gameService.CheckBoard(submittedBoard).Should().BeFalse();
+        }
 
     }
 }

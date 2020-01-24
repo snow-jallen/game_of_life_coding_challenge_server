@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Contest.Shared;
 using Contest.Shared.Enums;
@@ -31,6 +32,7 @@ namespace ContestServer.Controllers
         [HttpPost]
         public UpdateResponse Post([FromBody]UpdateRequest request)
         {
+            Console.WriteLine("Recieved Request: " + JsonSerializer.Serialize(request));
             var response = new UpdateResponse();
             if (request == null)
             {

@@ -10,7 +10,7 @@ namespace ContestServer.Services
     public class GameService
     {
         private GameStatus gameStatus;
-        private IEnumerable<Coordinate> endingBoard;
+        public IEnumerable<Coordinate> endingBoard;
 
         public GameService()
         {
@@ -28,6 +28,11 @@ namespace ContestServer.Services
         public void EndGame()
         {
             gameStatus.IsGameOver = true;
+        }
+
+        public bool CheckBoard(IEnumerable<Coordinate> submittedBoard)
+        {
+            return endingBoard.All(submittedBoard.Contains);
         }
     }
 
