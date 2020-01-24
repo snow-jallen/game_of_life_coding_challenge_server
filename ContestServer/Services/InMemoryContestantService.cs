@@ -49,31 +49,28 @@ namespace ContestServer.Services
             contestants.TryRemove(contestant.Token, out var removed);
         }
 
-        public void UpdateContestant(Contestant contestant, ContestantStatus status)
+        public void UpdateContestant(Contestant contestant)
         {
             if (contestant is null)
             {
                 throw new ArgumentNullException(nameof(contestant));
             }
 
-            if (status is null)
-            {
-                throw new ArgumentNullException(nameof(status));
-            }
-
             var startedGameAt = contestant.StartedGameAt;
-            if (contestant.StatusCode == ClientStatus.Waiting && status.StatusCode == ClientStatus.Processing)
-                startedGameAt = DateTime.Now;
+            // //if contestant was at 0 generations and is now greater than 0 generations
+            // if (contestant.StatusCode == ClientStatus.Waiting && status.StatusCode == ClientStatus.Processing)
+            //     startedGameAt = DateTime.Now;
 
             var endedGameAt = contestant.EndedGameAt;
-            if (contestant.StatusCode == ClientStatus.Processing && status.StatusCode == ClientStatus.Complete)
-                endedGameAt = DateTime.Now;
+            // // if contestant was at < all generations and is now at all generations
+            // if (contestant.StatusCode == ClientStatus.Processing && status.StatusCode == ClientStatus.Complete)
+            //     endedGameAt = DateTime.Now;
 
-            var updatedContestant = new Contestant(contestant.Name,
+            var updatedContestant = new Contestant(
+                contestant.Name,
                 contestant.Token,
-                status.LastSeen,
-                status.GenerationsComputed,
-                status.StatusCode,
+                contestant.LastSeen,
+                contestant.GenerationsComputed,
                 startedGameAt,
                 endedGameAt);
 

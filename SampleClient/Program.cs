@@ -49,8 +49,7 @@ namespace SampleClient
                 }
                 updateResponse = await client.Update(new UpdateRequest
                 {
-                    Token = token,
-                    Status = status
+                    Token = token
                 });
             } while (updateResponse.GameState == GameState.NotStarted);
 
@@ -80,8 +79,7 @@ namespace SampleClient
             {
                 Token = token,
                 GenerationsComputed = generations,
-                ResultBoard = solvedBoard,
-                Status = status
+                ResultBoard = solvedBoard
             };
             Console.WriteLine($"\t[Reporting heartbeat: Status={status}; Generations={generations}]");
             var response = await client.Update(request);

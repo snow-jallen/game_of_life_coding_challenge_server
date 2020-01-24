@@ -3,6 +3,5 @@ content-type: application/json
 
 {
     "token": "595ebd17-f35e-4fc3-9d90-6e1a3d774b55",
-    "Status": "Processing",
     "GenerationsComputed": 30
 }

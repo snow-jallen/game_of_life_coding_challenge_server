@@ -58,12 +58,17 @@ namespace ContestServer.Controllers
                 return response;
             }
 
-            contestantService.UpdateContestant(contestant, new ContestantStatus
-            {
-                LastSeen = timeService.Now(),
-                GenerationsComputed = request.GenerationsComputed,
-                StatusCode = request.Status
-            });
+            // at this point we are done with validation
+            contestant = new Contestant
+            (
+                contestant.Name,
+                contestant.Token,
+                contestant.LastSeen,
+                request.GenerationsComputed,
+                contestant.StartedGameAt,
+                contestant.EndedGameAt
+            );
+            contestantService.UpdateContestant(contestant);
 
             var gameStatus = gameService.GetGameStatus();
 

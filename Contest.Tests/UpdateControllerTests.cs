@@ -29,7 +29,7 @@ namespace Contest.Tests
             timeServiceMock = new Mock<ITimeService>();
             timeServiceMock.Setup(m => m.Now()).Returns(time1);
 
-            contestant1 = new Contestant("Contestant1", "1234", timeServiceMock.Object.Now(), 0, ClientStatus.Waiting);
+            contestant1 = new Contestant("Contestant1", "1234", timeServiceMock.Object.Now(), 0);
             contestantService.AddContestant(contestant1);
 
             updateController = new UpdateController(contestantService, timeServiceMock.Object, new GameService());
