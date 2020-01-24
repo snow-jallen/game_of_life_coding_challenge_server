@@ -11,7 +11,8 @@ namespace Contest.Shared.Models
             DateTime lastSeen, 
             long? generationsComputed, 
             DateTime? startedGameAt=null, 
-            DateTime? endedGameAt=null)
+            DateTime? endedGameAt=null,
+            bool? correctFinalBoard=false)
         {
             Name = name;
             Token = token;
@@ -19,6 +20,7 @@ namespace Contest.Shared.Models
             GenerationsComputed = generationsComputed;
             StartedGameAt = startedGameAt;
             EndedGameAt = endedGameAt;
+            CorrectFinalBoard = correctFinalBoard;
         }
 
         public string Name { get; }
@@ -36,5 +38,6 @@ namespace Contest.Shared.Models
                 return EndedGameAt - StartedGameAt;
             }
         }
+        public bool? CorrectFinalBoard { get; }
     }
 }
