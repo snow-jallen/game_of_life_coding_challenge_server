@@ -9,6 +9,19 @@ namespace Contest.Shared.Http
 {
     public class StatsResponse
     {
-        public IEnumerable<Contestant> Contestants { get; set; }
+        public StatsResponse(IEnumerable<Contestant> contestants)
+        {
+            Contestants = contestants.Select(c => {
+                return new Contestant{
+                    Name = c.Name,
+                    GenerationsComputed = c.GenerationsComputed,
+                    StartedGameAt = c.StartedGameAt,
+                    EndedGameAt = c.EndedGameAt,
+                    LastSeen = c.LastSeen,
+                    CorrectFinalBoard = c.CorrectFinalBoard
+                };
+            });
+        }
+        public IEnumerable<Contestant> Contestants { get; }
     }
 }

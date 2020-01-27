@@ -24,7 +24,7 @@ namespace ContestServer.Controllers
         [HttpGet]
         public StatsResponse Get()
         {
-            return new StatsResponse { Contestants = contestantService.GetContestants() };
+            return new StatsResponse(contestantService.GetContestants());
         }
     }
 }
