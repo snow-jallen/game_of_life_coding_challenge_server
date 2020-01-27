@@ -76,7 +76,6 @@ namespace ContestServer.Controllers
                 contestant.EndedGameAt,
                 request.ResultBoard
             );
-            contestantService.UpdateContestant(contestant);
 
             var gameStatus = gameService.GetGameStatus();
 
@@ -86,13 +85,24 @@ namespace ContestServer.Controllers
 
             if(gameStatus.IsStarted)
             {
+                contestant = StartContestantIfNotStarted(contestant);
                 response.SeedBoard = gameStatus.SeedBoard;
                 response.GenerationsToCompute = gameStatus.NumberGenerations;
             }
 
             response.IsError = false;
 
+            contestantService.UpdateContestant(contestant);
             return response;
+        }
+
+        private Contestant StartContestantIfNotStarted(Contestant contestant)
+        {
+            if(contestant.StartedGameAt == null)
+            {
+                contestant.StartedGameAt = timeService.Now();
+            }
+            return contestant;
         }
     }
 }

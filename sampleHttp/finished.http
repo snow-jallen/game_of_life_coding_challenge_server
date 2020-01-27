@@ -2,7 +2,7 @@ POST https://localhost:5001/update
 content-type: application/json
 
 {
-    "token": "6fadb61e-cf02-4e67-81fc-ffc76a262269",
+    "token": "002275e4-f7f5-4e41-a465-e6e2d6d47a98",
     "GenerationsComputed": 150,
     "ResultBoard": [
         {

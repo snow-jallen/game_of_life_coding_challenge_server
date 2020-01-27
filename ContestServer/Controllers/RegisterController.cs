@@ -32,7 +32,12 @@ namespace ContestServer.Controllers
             response.Name = request.Name;
             response.Token = Guid.NewGuid().ToString();
 
-            contestantService.AddContestant(new Contestant(response.Name, response.Token, timeService.Now(), 0));
+            contestantService.AddContestant(new Contestant {
+                Name = response.Name,
+                Token = response.Token,
+                GenerationsComputed = 0,
+                LastSeen = timeService.Now()
+                });
 
             return response;
         }

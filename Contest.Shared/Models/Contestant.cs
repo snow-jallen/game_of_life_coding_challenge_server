@@ -6,6 +6,10 @@ namespace Contest.Shared.Models
 {
     public class Contestant
     {
+        public Contestant()
+        {
+            
+        }
         public Contestant(
             string name, 
             string token, 
@@ -26,12 +30,12 @@ namespace Contest.Shared.Models
             CorrectFinalBoard = correctFinalBoard;
         }
 
-        public string Name { get; }
-        public string Token { get; }
-        public DateTime LastSeen { get; }
-        public long? GenerationsComputed { get; }
-        public DateTime? StartedGameAt { get; }
-        public DateTime? EndedGameAt { get; }
+        public string Name { get; set;  }
+        public string Token { get; set;  }
+        public DateTime LastSeen { get; set;  }
+        public long? GenerationsComputed { get; set;  }
+        public DateTime? StartedGameAt { get; set;  }
+        public DateTime? EndedGameAt { get; set;  }
         public TimeSpan? Elapsed
         {
             get
@@ -41,7 +45,7 @@ namespace Contest.Shared.Models
                 return EndedGameAt - StartedGameAt;
             }
         }
-        public IEnumerable<Coordinate> FinalBoard { get; }
-        public bool? CorrectFinalBoard { get; }
+        public IEnumerable<Coordinate> FinalBoard { get; set;  }
+        public bool? CorrectFinalBoard { get; set;  }
     }
 }

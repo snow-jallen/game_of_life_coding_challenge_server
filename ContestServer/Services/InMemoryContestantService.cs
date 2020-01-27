@@ -13,13 +13,15 @@ namespace ContestServer.Services
     public class InMemoryContestantService : IContestantService
     {
         private ConcurrentDictionary<string, Contestant> contestants;
+        private readonly ITimeService timeService;
 
         public IGameService GameService { get; }
 
-        public InMemoryContestantService(IGameService gameService)
+        public InMemoryContestantService(IGameService gameService, ITimeService timeService)
         {
             contestants = new ConcurrentDictionary<string, Contestant>();
             GameService = gameService;
+            this.timeService = timeService;
         }
 
         public void AddContestant(Contestant contestant)
@@ -74,15 +76,21 @@ namespace ContestServer.Services
             {
                 throw new ArgumentNullException(nameof(contestant));
             }
+            contestant = updateContestantIfFinished(contestant);
 
-            
+            contestants.AddOrUpdate(contestant.Token, contestant, (token, existing) => contestant);
+        }
 
-            if(contestant.GenerationsComputed == GameService.GetNumGenerations())
+        private Contestant updateContestantIfFinished(Contestant contestant)
+        {
+            if (contestant.GenerationsComputed == GameService.GetNumGenerations()
+                && contestant.EndedGameAt == null)
             {
+                contestant.EndedGameAt = timeService.Now();
                 contestant = checkContestantBoard(contestant);
             }
 
-            contestants.AddOrUpdate(contestant.Token, contestant, (token, existing) => contestant);
+            return contestant;
         }
 
         private Contestant checkContestantBoard(Contestant contestant)

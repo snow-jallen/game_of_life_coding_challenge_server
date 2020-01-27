@@ -27,8 +27,8 @@ namespace Contest.Tests
         public void Setup()
         {
             gameService = new Mock<IGameService>();
-            contestantService = new InMemoryContestantService(gameService.Object);
             timeServiceMock = new Mock<ITimeService>();
+            contestantService = new InMemoryContestantService(gameService.Object, timeServiceMock.Object);
             timeServiceMock.Setup(m => m.Now()).Returns(time1);
 
             contestant1 = new Contestant("Contestant1", "1234", timeServiceMock.Object.Now(), 0);

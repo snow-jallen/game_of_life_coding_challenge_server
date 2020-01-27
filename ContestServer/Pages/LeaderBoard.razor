@@ -2,6 +2,7 @@
 @using System.Threading
 @inject IGameService gameService;
 @inject IContestantService contestantService;
+@using System.Text.Json;
 <h1>Leader Board</h1>
 
 @if (status.IsStarted)
@@ -14,8 +15,9 @@
             <th>Name</th>
             <th>Last Seen</th>
             <th>Generations</th>
+            <th>Started</th>
+            <th>Finished</th>
             <th>Elapsed</th>
-            <th>CorrectAns</th>
         </tr>
         @foreach (var contestant in contestantService.GetContestants())
         {
@@ -23,6 +25,8 @@
                 <td>@contestant.Name</td>
                 <td>@contestant.LastSeen.ToShortTimeString()</td>
                 <td>@contestant.GenerationsComputed</td>
+                <td>@contestant.StartedGameAt</td>
+                <td>@contestant.EndedGameAt</td>
                 <td>@contestant.Elapsed</td>
             </tr>
         }
