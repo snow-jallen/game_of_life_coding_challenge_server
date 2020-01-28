@@ -77,11 +77,12 @@ namespace ContestServer.Services
             {
                 throw new ArgumentNullException(nameof(contestant));
             }
+            if(GameService.GetGameStatus().IsStarted == false)
+                return;
+
             var existingContestantRecord = GetContestantByToken(contestant.Token);
             if (existingContestantRecord.CorrectFinalBoard != null)
-            {
                 return;
-            }
 
             contestant = updateContestantIfFinished(contestant);
 
