@@ -18,34 +18,18 @@
     else
     {
         <label>Pick a default game:</label>
-        <select @bind="selectedDefaultGame">
+        <select @bind="SelectedDefaultGame">
             @foreach (var game in DefaultGames.Keys)
             {
                 <option value="@game">@game</option>
             }
         </select>
-        <label>Number of generations to compute</label><br />
+        <label>Number of generations to compute:</label><br />
         <input type="text" @bind="NumGenerations" />
         <div asp-validation-summary="All" class="text-danger"></div>
         <button class="btn btn-primary" @onclick="begin">Start Game</button>
-
-        <p>@SerializedBoard()</p>
-
-        @* <h3>Configure Board</h3>
-        <div>
-            @for (int h = 1; h <= Height; h++)
-            {
-                <div class="row">
-                    @for (int w = 1; w <= Width; w++)
-                    {
-                        var row = computedRow(Height-h);
-                        var column = computedColumn(Width - w);
-                        <input type="checkbox"
-                               @bind="StartingBoard[row, column]">
-                    }
-                </div>
-            }
-        </div> *@
+        <label>Configure Starting Board</label>
+        <textarea class="form-control" @bind="SerializedBoard"></textarea>
     }
 </div>
 
@@ -57,64 +41,27 @@
         new KeyValuePair<string, string>("Left Leaning O", SampleGames.LeftLeaningO),
     });
     string selectedDefaultGame;
-    //string SelectedDefaultGame
-    //{
-    //    get { return selectedDefaultGame; }
-    //    set
-    //    {
-    //        selectedDefaultGame = value;
-    //        var coords = JsonSerializer.Deserialize<IEnumerable<Coordinate>>(DefaultGames[selectedDefaultGame]);
-    //
-    //        for (int h = 1; h <= Height; h++)
-    //        {
-    //            for (int w = 1; w <= Width; w++)
-    //            {
-    //                var testCoord = new Coordinate(h, w);
-    //                StartingBoard[h, w] = (coords.Contains(testCoord));
-    //            }
-    //        }
-    //        this.StateHasChanged();
-    //    }
-    //}
+    string SelectedDefaultGame
+    {
+        get { return selectedDefaultGame; }
+        set
+        {
+            selectedDefaultGame = value;
+            SerializedBoard = DefaultGames[selectedDefaultGame];
+        }
+    }
 
     bool gameIsStarting = false;
     private JsonSerializerOptions options;
 
     protected override void OnInitialized()
     {
-        StartingBoard = new bool[Height + 1, Width + 1];
-        selectedDefaultGame = DefaultGames.Keys.First();
+        SelectedDefaultGame = DefaultGames.Keys.First();
     }
 
-    public string SeedBoard { get; set; }
     public int NumGenerations { get; set; } = 150;
-    public static int Width = 60;
-    public static int Height = 40;
-    public bool[,] StartingBoard { get; set; }
 
-    public int computedRow(int row)
-    {
-        return row - (Height / 2);
-    }
-    public int computedColumn(int column)
-    {
-        return column - (Width / 2);
-    }
-
-    public string SerializedBoard()
-    {
-        IEnumerable<Coordinate> coordinates = new Coordinate[] { };
-        for (int h = 1; h <= Height; h++)
-        {
-            for (int w = 1; w <= Width; w++)
-            {
-                coordinates = StartingBoard[h, w]
-                    ? coordinates.Append(new Coordinate(computedRow(h), computedColumn(w)))
-                    : coordinates;
-            }
-        }
-        return JsonSerializer.Serialize(coordinates);
-    }
+    public string SerializedBoard { get; set; }
 
     public async Task begin()
     {
