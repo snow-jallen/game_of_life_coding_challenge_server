@@ -77,6 +77,12 @@ namespace ContestServer.Services
             {
                 throw new ArgumentNullException(nameof(contestant));
             }
+            var existingContestantRecord = GetContestantByToken(contestant.Token);
+            if (existingContestantRecord.CorrectFinalBoard != null)
+            {
+                return;
+            }
+
             contestant = updateContestantIfFinished(contestant);
 
             contestants.AddOrUpdate(contestant.Token, contestant, (token, existing) => contestant);
@@ -99,18 +105,11 @@ namespace ContestServer.Services
         {
             if(contestant.FinalBoard == null)
                 throw new ArgumentNullException("Final Board Cannot be null at last generation");
+
             var correctAnswer = GameService.CheckBoard(contestant.FinalBoard);
             Console.WriteLine($"Contestant {contestant.Name} computed board: " + correctAnswer);
-            return new Contestant(
-                contestant.Name,
-                contestant.Token,
-                contestant.LastSeen,
-                contestant.GenerationsComputed,
-                contestant.StartedGameAt,
-                contestant.EndedGameAt,
-                contestant.FinalBoard,
-                correctAnswer
-            );
+            contestant.CorrectFinalBoard = correctAnswer;
+            return contestant;
         }
     }
 }

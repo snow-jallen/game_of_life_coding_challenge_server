@@ -98,5 +98,38 @@ namespace Contest.Tests
             wednesday = contestantService.GetContestantByToken(wednesday.Token);
             wednesday.Elapsed.Should().NotBeNull();
         }
+
+        [Test]
+        public void VerifyGradesArePersisted()
+        {
+            var gameService = new GameService();
+            var contestantService = new InMemoryContestantService(gameService, timeServiceMoq.Object);
+            var startingBoard = new Coordinate[]
+            {
+                new Coordinate{ X = 1, Y = 1}
+            };
+            var endingBoard = new Coordinate[]
+            {
+                new Coordinate{ X = 1, Y = 1}
+            };
+
+            gameService.StartGame(startingBoard, 100, endingBoard);
+            var jonathan = new Contestant
+            {
+                Name = "jonathan",
+                Token = "token",
+                LastSeen = DateTime.Now,
+                GenerationsComputed = 0
+            };
+            contestantService.AddContestant(jonathan);
+
+            jonathan.GenerationsComputed = 100;
+            jonathan.FinalBoard = endingBoard;
+
+            contestantService.UpdateContestant(jonathan);
+
+            var newJonathan = contestantService.GetContestantByToken(jonathan.Token);
+            newJonathan.CorrectFinalBoard.Should().BeTrue();
+        }
     }
 }

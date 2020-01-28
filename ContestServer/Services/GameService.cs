@@ -37,8 +37,9 @@ namespace ContestServer.Services
 
         public bool CheckBoard(IEnumerable<Coordinate> submittedBoard)
         {
-            Console.WriteLine("checking board: " + JsonSerializer.Serialize(submittedBoard));
-            Console.WriteLine("against board: " + JsonSerializer.Serialize(endingBoard));
+            // Console.WriteLine("checking board: " + JsonSerializer.Serialize(submittedBoard));
+            // Console.WriteLine("against board: " + JsonSerializer.Serialize(endingBoard));
+
             return endingBoard.All(submittedBoard.Contains);
         }
 
