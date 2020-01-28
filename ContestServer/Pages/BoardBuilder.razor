@@ -26,8 +26,8 @@
                     var row = h;
                     var column = w;
                     <input type="checkbox"
-                        @bind-value="StartingBoard[row, column]"
-                        @bind-value:event="oninput">
+                        @bind="StartingBoard[row, column]" />
+                        @* @bind-value:event="oninput"> *@
                 }
             </div>
         }
@@ -66,8 +66,8 @@
             for(int w = 1; w <= Width; w++)
             {
                 coordinates = StartingBoard[h,w]
-                    ? coordinates.Append(new Coordinate(computedRow(h), computedColumn(w)))
-                    : coordinates;
+                    ? coordinates.Append(new Coordinate(computedColumn(w), computedRow(h)))
+                    : coordinates   ;
             }
         }
         return JsonSerializer.Serialize(coordinates);
