@@ -14,12 +14,17 @@ Your client needs to:
     in the body. You will receive back a token that needs to be included in all future messages.
 
 2) 
-    Post to /update with an UpdateRequest in the following format: 
+    Before you recieve the board post to /update with an UpdateRequest in the following format: 
+    Content-type: application/json
     {
       "token": "your assigned token",
       "generationsComputed": 0
     }
+    before the game starts you will recieve a response like
 
+    once the game starts you will recieve 
+
+3)
     generations computed (where x is the generation submited):
         x == 0:
             We assume you are waiting, when the game starts we will reply with the board and start your individual timer

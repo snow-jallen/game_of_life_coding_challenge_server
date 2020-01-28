@@ -18,7 +18,7 @@ namespace Contest.Shared.Models
             DateTime? startedGameAt=null, 
             DateTime? endedGameAt=null,
             IEnumerable<Coordinate> finalBoard=null,
-            bool? correctFinalBoard=false)
+            bool? correctFinalBoard=null)
         {
             Name = name;
             Token = token;

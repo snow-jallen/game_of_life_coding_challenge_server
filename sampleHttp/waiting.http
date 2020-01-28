@@ -1,7 +1,7 @@
-POST https://localhost:5001/update
+POST http://localhost:5000/update
 content-type: application/json
 
 {
-    "token": "002275e4-f7f5-4e41-a465-e6e2d6d47a98",
+    "token": "ab26a665-2ea9-4339-912e-2ae808a5003e",
     "GenerationsComputed": 0
 }

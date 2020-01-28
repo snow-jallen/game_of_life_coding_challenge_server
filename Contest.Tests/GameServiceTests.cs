@@ -74,5 +74,6 @@ namespace Contest.Tests
             gameService.CheckBoard(submittedBoard).Should().BeFalse();
         }
 
+
     }
 }
