@@ -6,6 +6,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace ContestServer.Services
@@ -79,6 +80,7 @@ namespace ContestServer.Services
             contestant = updateContestantIfFinished(contestant);
 
             contestants.AddOrUpdate(contestant.Token, contestant, (token, existing) => contestant);
+            // Console.WriteLine("Contestants: " + JsonSerializer.Serialize(GetContestants()));
         }
 
         private Contestant updateContestantIfFinished(Contestant contestant)
@@ -97,6 +99,8 @@ namespace ContestServer.Services
         {
             if(contestant.FinalBoard == null)
                 throw new ArgumentNullException("Final Board Cannot be null at last generation");
+            var correctAnswer = GameService.CheckBoard(contestant.FinalBoard);
+            Console.WriteLine($"Contestant {contestant.Name} computed board: " + correctAnswer);
             return new Contestant(
                 contestant.Name,
                 contestant.Token,
@@ -105,7 +109,7 @@ namespace ContestServer.Services
                 contestant.StartedGameAt,
                 contestant.EndedGameAt,
                 contestant.FinalBoard,
-                GameService.CheckBoard(contestant.FinalBoard)
+                correctAnswer
             );
         }
     }

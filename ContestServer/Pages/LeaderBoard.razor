@@ -10,24 +10,28 @@
     <h2>Game has started!</h2>
     <p>Computing @status.NumberGenerations generations</p>
 
-    <table>
-        <tr>
-            <th>Name</th>
-            <th>Last Seen</th>
-            <th>Generations</th>
-            <th>Started</th>
-            <th>Finished</th>
-            <th>Elapsed</th>
-        </tr>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Last Seen</th>
+                <th>Generations</th>
+                <th>Started</th>
+                <th>Finished</th>
+                <th>Elapsed</th>
+                <th>Correct Answer</th>
+            </tr>
+        </thead>
         @foreach (var contestant in contestantService.GetContestants())
         {
             <tr>
-                <td>@contestant.Name</td>
+                <td scope="row">@contestant.Name</td>
                 <td>@contestant.LastSeen.ToShortTimeString()</td>
                 <td>@contestant.GenerationsComputed</td>
-                <td>@contestant.StartedGameAt</td>
-                <td>@contestant.EndedGameAt</td>
+                <td>@contestant.StartedGameAt?.ToString("T")</td>
+                <td>@contestant.EndedGameAt?.ToString("T")</td>
                 <td>@contestant.Elapsed</td>
+                <td>@contestant.CorrectFinalBoard</td>
             </tr>
         }
     </table>

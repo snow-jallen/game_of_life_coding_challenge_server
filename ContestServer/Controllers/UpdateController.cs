@@ -32,7 +32,6 @@ namespace ContestServer.Controllers
         [HttpPost]
         public UpdateResponse Post([FromBody]UpdateRequest request)
         {
-            Console.WriteLine("Recieved Request: " + JsonSerializer.Serialize(request));
             var response = new UpdateResponse();
             if (request == null)
             {

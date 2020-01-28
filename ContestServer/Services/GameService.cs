@@ -3,6 +3,7 @@ using Contest.Shared.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace ContestServer.Services
@@ -36,6 +37,8 @@ namespace ContestServer.Services
 
         public bool CheckBoard(IEnumerable<Coordinate> submittedBoard)
         {
+            Console.WriteLine("checking board: " + JsonSerializer.Serialize(submittedBoard));
+            Console.WriteLine("against board: " + JsonSerializer.Serialize(endingBoard));
             return endingBoard.All(submittedBoard.Contains);
         }
 
