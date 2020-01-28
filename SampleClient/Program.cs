@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -31,7 +32,20 @@ namespace SampleClient
             }
 
             var server = args[0];
-            Console.WriteLine($"Connecting to server @ {server}");
+
+            HttpWebResponse response;
+            var timer = Stopwatch.StartNew();
+            do
+            {
+                Console.WriteLine($"Connecting to server @ {server}");
+                var request = WebRequest.CreateHttp(server);
+                response = (HttpWebResponse)request.GetResponse();
+            } while (response.StatusCode != HttpStatusCode.OK && timer.Elapsed.TotalSeconds < 30);
+            if(response.StatusCode != HttpStatusCode.OK)
+            {
+                Console.WriteLine("Server didn't come up.  What's going on?");
+                return;
+            }
 
             client = RestService.For<IContestServer>(server);
             var registerRequest = new RegisterRequest { Name = Environment.UserName };

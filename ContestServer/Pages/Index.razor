@@ -65,20 +65,20 @@ else
         var timer = new Timer(new TimerCallback(async _ =>
         {
             InvokeAsync(updateContestants);
-        }), state: null, dueTime: 0, period: 2_000);        
+        }), state: null, dueTime: 0, period: 2_000);
     }
 
     private async Task<bool> updateContestants()
     {
         return await Task.Run<bool>(() => {
             Contestants = contestantService.GetContestants();
-            StateHasChanged();
+            InvokeAsync(() => StateHasChanged());
             return true;
         });
         // var staleContestants = from c in allContestants
         //                        where c.LastSeen.AddSeconds(UserExpirationInSeconds) < timeService.Now()
         //                        select c;
-// 
+        //
         // foreach (var staleContestant in staleContestants)
         // {
         //     contestantService.RemoveContestant(staleContestant);
