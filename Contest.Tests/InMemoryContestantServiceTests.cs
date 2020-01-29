@@ -54,6 +54,9 @@ namespace Contest.Tests
             gameServiceMoq
                 .Setup(gs => gs.CheckBoard(finalBoard))
                 .Returns(true);
+            gameServiceMoq
+                .Setup(gs => gs.GetGameStatus())
+                .Returns(new GameStatus(finalBoard));
 
             var wednesday = new Contestant{
                 Name = "wednesday",
@@ -80,7 +83,12 @@ namespace Contest.Tests
             {
                 new Coordinate{ X = 1, Y = 1}
             };
-            gameServiceMoq.Setup(gs => gs.GetNumGenerations()).Returns(lastGeneration);
+            gameServiceMoq
+                .Setup(gs => gs.GetNumGenerations())
+                .Returns(lastGeneration);
+            gameServiceMoq
+                .Setup(gs => gs.GetGameStatus())
+                .Returns(new GameStatus(finalBoard));
             var wednesday = new Contestant{
                 Name = "wednesday",
                 Token = "wednesday's token",
