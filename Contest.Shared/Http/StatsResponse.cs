@@ -12,14 +12,16 @@ namespace Contest.Shared.Http
         public StatsResponse(IEnumerable<Contestant> contestants)
         {
             Contestants = contestants.Select(c => {
-                return new Contestant{
-                    Name = c.Name,
-                    GenerationsComputed = c.GenerationsComputed,
-                    StartedGameAt = c.StartedGameAt,
-                    EndedGameAt = c.EndedGameAt,
-                    LastSeen = c.LastSeen,
-                    CorrectFinalBoard = c.CorrectFinalBoard
-                };
+                return new Contestant(
+                    c.Name,
+                    "",
+                    c.LastSeen,
+                    c.GenerationsComputed,
+                    c.StartedGameAt,
+                    c.EndedGameAt,
+                    new Coordinate[]{},
+                    c.CorrectFinalBoard
+                );
             });
         }
         public IEnumerable<Contestant> Contestants { get; }

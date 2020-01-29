@@ -99,7 +99,7 @@ namespace ContestServer.Controllers
         {
             if(contestant.StartedGameAt == null)
             {
-                contestant.StartedGameAt = timeService.Now();
+                return contestant.UpdateStartedGameAt(timeService.Now());
             }
             return contestant;
         }

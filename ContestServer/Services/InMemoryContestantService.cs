@@ -95,7 +95,7 @@ namespace ContestServer.Services
             if (contestant.GenerationsComputed == GameService.GetNumGenerations()
                 && contestant.EndedGameAt == null)
             {
-                contestant.EndedGameAt = timeService.Now();
+                contestant = contestant.UpdateEndedGameAt(timeService.Now());
                 contestant = checkContestantBoard(contestant);
             }
 
@@ -109,7 +109,7 @@ namespace ContestServer.Services
 
             var correctAnswer = GameService.CheckBoard(contestant.FinalBoard);
             Console.WriteLine($"Contestant {contestant.Name} computed board: " + correctAnswer);
-            contestant.CorrectFinalBoard = correctAnswer;
+            contestant = contestant.UpdateCorrectFinalBoard(correctAnswer);
             return contestant;
         }
     }
