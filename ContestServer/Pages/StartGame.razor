@@ -18,18 +18,20 @@
     else
     {
         <label>Pick a default game:</label>
-        <select @bind="SelectedDefaultGame">
+        <select @bind="SelectedDefaultGame" disabled="@isBoardSolved">
             @foreach (var game in DefaultGames.Keys)
             {
                 <option value="@game">@game</option>
             }
         </select>
         <label>Number of generations to compute:</label><br />
-        <input type="text" @bind="NumGenerations" />
+        <input type="text" @bind="NumGenerations" disabled="@isBoardSolved" />
         <div asp-validation-summary="All" class="text-danger"></div>
-        <button class="btn btn-primary" @onclick="begin">Start Game</button>
         <label>Configure Starting Board</label>
-        <textarea class="form-control" @bind="SerializedBoard"></textarea>
+        <textarea class="form-control" @bind="SerializedBoard" disabled="@isBoardSolved"></textarea>
+        <button class="btn btn-primary" @onclick="solveBoard" disabled="@isBoardSolved">Solve board (prepare game)</button>
+        <hr/>
+        <button class="btn btn-danger" @onclick="startGame" disabled="@isPreparingBoard" >Start Game</button>
     }
 </div>
 
@@ -53,6 +55,10 @@
 
     bool gameIsStarting = false;
     private JsonSerializerOptions options;
+    private bool isPreparingBoard = true;
+    private bool isBoardSolved = false;
+    private IEnumerable<Coordinate> startingBoard = null;
+    private IEnumerable<Coordinate> finalBoard = null;
 
     protected override void OnInitialized()
     {
@@ -63,20 +69,27 @@
 
     public string SerializedBoard { get; set; }
 
-    public async Task begin()
+    public async Task solveBoard()
     {
-        gameIsStarting = true;
         var jsonBoard = DefaultGames[selectedDefaultGame];
-        var startingBoard = JsonSerializer.Deserialize<IEnumerable<Coordinate>>(jsonBoard);
-        await Task.Run<IEnumerable<Coordinate>>(() =>
+        startingBoard = JsonSerializer.Deserialize<IEnumerable<Coordinate>>(jsonBoard);
+        finalBoard = await Task.Run<IEnumerable<Coordinate>>(() =>
         {
             var endingBoard = GameSolver.Solve(startingBoard, NumGenerations, batchSize: NumGenerations);
             return endingBoard;
-        }).ContinueWith((t) =>
-        {
-            var endingBoard = t.Result;
-            game.StartGame(startingBoard, NumGenerations, endingBoard);
-            NavManager.NavigateTo("/leaderboard");
-        }).ConfigureAwait(true);
+        });
+        isBoardSolved = true;
+        isPreparingBoard = false;
+    }
+
+    public void startGame()
+    {
+        if (isPreparingBoard)
+            return;
+
+        gameIsStarting = true;
+
+        game.StartGame(startingBoard, NumGenerations, finalBoard);
+        NavManager.NavigateTo("/leaderboard");
     }
 }
