@@ -32,6 +32,9 @@ namespace SampleClient
             }
 
             var server = args[0];
+            var clientName = Environment.UserName;
+            if (args.Length > 1)
+                clientName = args[1];
 
             HttpWebResponse response;
             var timer = Stopwatch.StartNew();
@@ -48,7 +51,7 @@ namespace SampleClient
             }
 
             client = RestService.For<IContestServer>(server);
-            var registerRequest = new RegisterRequest { Name = Environment.UserName };
+            var registerRequest = new RegisterRequest { Name = clientName };
             var registerResponse = await client.Register(registerRequest);
             token = registerResponse.Token;
             status = ClientStatus.Waiting;
