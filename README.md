@@ -67,6 +67,6 @@ Your client needs to:
             
 
 
-   You will get a response back with a gameState ("NotStarted"), generationsToCompute (nullable int), seedBoard (list of Coordinates), isError (bool), errorMessage (string) You need to continue to post to /update every 5 seconds.
+   You will get a response back with a gameState ("NotStarted"), generationsToCompute (nullable int), seedBoard (list of Coordinates), isError (bool), errorMessage (string) You need to continue to post to /update every 1 second.
 
 Once the game has begun the gameState will become "InProgress", seedBoard will have the initial list of live cells, and generationsToCompute will have a value.
