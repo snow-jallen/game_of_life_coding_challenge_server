@@ -143,21 +143,21 @@ namespace Contest.Tests
             newJonathan.CorrectFinalBoard.Should().BeTrue();
         }
 
-        [Test]
-        public void CanResetContestantList()
-        {
-            var wednesday = new Contestant(
-                "wednesday",
-                "wednesday's token",
-                DateTime.Now,
-                0
-            );
-            contestantService.AddContestant(wednesday);
+        // [Test]
+        // public void CanResetContestantList()
+        // {
+        //     var wednesday = new Contestant(
+        //         "wednesday",
+        //         "wednesday's token",
+        //         DateTime.Now,
+        //         0
+        //     );
+        //     contestantService.AddContestant(wednesday);
 
-            contestantService.ResetContestantList();
+        //     contestantService.ResetContestantList();
 
-            contestantService.GetContestants
+        //     contestantService.GetContestants
             
-        }
+        // }
     }
 }
