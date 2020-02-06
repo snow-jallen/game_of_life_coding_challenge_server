@@ -142,5 +142,22 @@ namespace Contest.Tests
             var newJonathan = contestantService.GetContestantByToken(jonathan.Token);
             newJonathan.CorrectFinalBoard.Should().BeTrue();
         }
+
+        [Test]
+        public void CanResetContestantList()
+        {
+            var wednesday = new Contestant(
+                "wednesday",
+                "wednesday's token",
+                DateTime.Now,
+                0
+            );
+            contestantService.AddContestant(wednesday);
+
+            contestantService.ResetContestantList();
+
+            contestantService.GetContestants
+            
+        }
     }
 }
