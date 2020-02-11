@@ -6,64 +6,63 @@ Then open a web browser and go to http://localhost
 
 Your client needs to:
 
-1) 
-    post to /register and send 
+1) post to /register and send 
+
     {
-       "name": "your name"
+
+        "name": "your name"
+
     } 
+
     in the body. You will receive back a token that needs to be included in all future messages.
 
-2) 
-    Before you recieve the board post to /update with an UpdateRequest in the following format: 
+2) Before you recieve the board post to /update with an UpdateRequest in the following format: 
 
     Content-type: application/json
 
     {
 
-      "token": "your assigned token",
+        "token": "your assigned token",
 
-      "generationsComputed": 0
+        "generationsComputed": 0
 
     }
 
     before the game starts you will recieve a response like
-
     once the game starts you will recieve 
 
-3)
-    generations computed (where x is the generation submited):
+3) generations computed (where x is the generation submited):
 
-        x == 0:
+    x == 0:
 
-            We assume you are waiting, when the game starts we will reply with the board and start your individual timer
+        We assume you are waiting, when the game starts we will reply with the board and start your individual timer
 
-        0 <= x <= last_generation:
+    0 <= x <= last_generation:
 
-            Your board is in progress, you should send an update once a second
+        Your board is in progress, you should send an update once a second
 
-        x == last_generation:
+    x == last_generation:
+    
+        you will be marked as completed, you must also provide the final board. 
         
-            you will be marked as completed, you must also provide the final board. 
+        {
             
-            {
+            "token": "your token",
+            
+            "GenerationsComputed": <last_generation>,
+            
+            "ResultBoard": [
                 
-                "token": "your token",
-                
-                "GenerationsComputed": <last_generation>,
-                
-                "ResultBoard": [
+                {
                     
-                    {
-                        
-                        "x": 1,
-                        
-                        "y": 1
-                        
-                    }
+                    "x": 1,
                     
-                ]
+                    "y": 1
+                    
+                }
                 
-            }
+            ]
+        }
             
 
 
