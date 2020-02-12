@@ -8,11 +8,9 @@ Your client needs to:
 
 1) post to /register and send 
 
-    {
-
-        "name": "your name"
-
-    } 
+        {
+            "name": "your name"
+        } 
 
     in the body. You will receive back a token that needs to be included in all future messages.
 
@@ -20,13 +18,10 @@ Your client needs to:
 
     Content-type: application/json
 
-    {
-
-        "token": "your assigned token",
-
-        "generationsComputed": 0
-
-    }
+        {
+            "token": "your assigned token",
+            "generationsComputed": 0
+        }
 
     before the game starts you will recieve a response like
     once the game starts you will recieve 
@@ -44,23 +39,14 @@ Your client needs to:
     x == last_generation:
     
         you will be marked as completed, you must also provide the final board. 
-        
         {
-            
             "token": "your token",
-            
             "GenerationsComputed": <last_generation>,
-            
             "ResultBoard": [
-                
                 {
-                    
                     "x": 1,
-                    
                     "y": 1
-                    
                 }
-                
             ]
         }
             
