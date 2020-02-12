@@ -27,7 +27,21 @@ else
 
 <div>
     <h3>Instructions</h3>
-    @((MarkupString)instructions)
+    @* @((MarkupString)instructions) *@
+    <ul>
+        <li><p>Go to /register and send {"name": "your name"} in the body. You will receive back a token that needs to be included in all future messages.</p></li>
+        <li>
+            Post to /update with an UpdateRequest in the following format:<br />
+            <pre>
+  {"token": "{guid value}", "clientStatus": "waiting"}
+            </pre>
+            <p>You will get a response back with a gameState ("NotStarted"), generationsToCompute (nullable int), seedBoard (list of Coordinates), isError (bool), errorMessage (string)</p>
+        </li>
+        <li><a href="/StartGame" class="btn btn-primary">Start Game</a></li>
+        <li>
+            Once the game has begun the gameState will become "InProgress", seedBoard will have the initial list of live cells, and generationsToCompute will have a value.
+        </li>
+    </ul>
 </div>
 
 <div>
