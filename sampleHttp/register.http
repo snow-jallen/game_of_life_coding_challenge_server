@@ -9,6 +9,6 @@ POST http://localhost:5000/update
 content-type: application/json
 
 {
-    "token": "902e17ad-5ff4-4529-9e90-2645a132dec5",
+    "token": "914e1bcc-6979-418f-bcce-fbf6ce9c529e",
     "GenerationsComputed": 0
 }

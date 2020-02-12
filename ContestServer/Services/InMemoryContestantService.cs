@@ -112,5 +112,10 @@ namespace ContestServer.Services
             contestant = contestant.UpdateCorrectFinalBoard(correctAnswer);
             return contestant;
         }
+
+        public void ResetContestantList()
+        {
+            contestants = new ConcurrentDictionary<string, Contestant>();
+        }
     }
 }

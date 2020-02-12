@@ -16,5 +16,6 @@ namespace ContestServer.Services
         void RemoveContestant(Contestant contestant);
         void UpdateContestant(Contestant contestant);
         bool ContestantExists(string token);
+        void ResetContestantList();
     }
 }
