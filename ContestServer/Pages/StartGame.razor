@@ -30,8 +30,11 @@
         <label>Configure Starting Board</label>
         <textarea class="form-control"
             @bind-value="SerializedBoard"
-            @bind-value:event="oninput" 
+            @bind-value:event="oninput"
             disabled="@isBoardSolved"></textarea>
+        <label>Paste in RLE</label>
+        <textarea class="form-control" @bind="startingRle" disabled="@isBoardSolved" ></textarea>
+        <button class="btn btn-info" @onclick="convertRle" disabled="@isBoardSolved">Convert RLE to json</button>
         <button class="btn btn-primary" @onclick="solveBoard" disabled="@isBoardSolved">Solve board (prepare game)</button>
         <hr/>
         <button class="btn btn-danger" @onclick="startGame" disabled="@isPreparingBoard" >Start Game</button>
@@ -56,6 +59,7 @@
         }
     }
 
+    string startingRle = string.Empty;
     bool gameIsStarting = false;
     private JsonSerializerOptions options;
     private bool isPreparingBoard = true;
@@ -70,6 +74,10 @@
         SelectedDefaultGame = DefaultGames.Keys.First();
     }
 
+    public void convertRle()
+    {
+
+    }
 
     public async Task solveBoard()
     {
