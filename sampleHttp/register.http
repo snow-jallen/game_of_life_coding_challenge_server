@@ -2,3 +2,13 @@ POST http://localhost:5000/register
 content-type: application/json
 
 { "name": "test-name" }
+
+###
+
+POST http://localhost:5000/update
+content-type: application/json
+
+{
+    "token": "914e1bcc-6979-418f-bcce-fbf6ce9c529e",
+    "GenerationsComputed": 0
+}

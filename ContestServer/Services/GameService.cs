@@ -8,8 +8,6 @@ using System.Threading.Tasks;
 
 namespace ContestServer.Services
 {
-
-
     public class GameService : IGameService
     {
         private GameStatus gameStatus;
@@ -37,10 +35,7 @@ namespace ContestServer.Services
 
         public bool CheckBoard(IEnumerable<Coordinate> submittedBoard)
         {
-            // Console.WriteLine("checking board: " + JsonSerializer.Serialize(submittedBoard));
-            // Console.WriteLine("against board: " + JsonSerializer.Serialize(endingBoard));
-
-            return endingBoard.All(submittedBoard.Contains);
+            return endingBoard.All(submittedBoard.Contains) && submittedBoard.All(endingBoard.Contains);
         }
 
         public long GetNumGenerations()

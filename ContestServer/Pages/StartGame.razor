@@ -28,7 +28,10 @@
         <input type="text" @bind="NumGenerations" disabled="@isBoardSolved" />
         <div asp-validation-summary="All" class="text-danger"></div>
         <label>Configure Starting Board</label>
-        <textarea class="form-control" @bind="SerializedBoard" disabled="@isBoardSolved"></textarea>
+        <textarea class="form-control"
+            @bind-value="SerializedBoard"
+            @bind-value:event="oninput" 
+            disabled="@isBoardSolved"></textarea>
         <button class="btn btn-primary" @onclick="solveBoard" disabled="@isBoardSolved">Solve board (prepare game)</button>
         <hr/>
         <button class="btn btn-danger" @onclick="startGame" disabled="@isPreparingBoard" >Start Game</button>
@@ -57,22 +60,19 @@
     private JsonSerializerOptions options;
     private bool isPreparingBoard = true;
     private bool isBoardSolved = false;
-    private IEnumerable<Coordinate> startingBoard = null;
+    private IEnumerable<Coordinate> startingBoard => JsonSerializer.Deserialize<IEnumerable<Coordinate>>(SerializedBoard);
     private IEnumerable<Coordinate> finalBoard = null;
+    public int NumGenerations { get; set; } = 150;
+    public string SerializedBoard { get; set; }
 
     protected override void OnInitialized()
     {
         SelectedDefaultGame = DefaultGames.Keys.First();
     }
 
-    public int NumGenerations { get; set; } = 150;
-
-    public string SerializedBoard { get; set; }
 
     public async Task solveBoard()
     {
-        var jsonBoard = DefaultGames[selectedDefaultGame];
-        startingBoard = JsonSerializer.Deserialize<IEnumerable<Coordinate>>(jsonBoard);
         finalBoard = await Task.Run<IEnumerable<Coordinate>>(() =>
         {
             var endingBoard = GameSolver.Solve(startingBoard, NumGenerations, batchSize: NumGenerations);

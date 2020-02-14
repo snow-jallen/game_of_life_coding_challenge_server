@@ -58,16 +58,17 @@ namespace Contest.Tests
                 .Setup(gs => gs.GetGameStatus())
                 .Returns(new GameStatus(finalBoard));
 
-            var wednesday = new Contestant{
-                Name = "wednesday",
-                Token = "wednesday's token",
-                StartedGameAt = DateTime.Now,
-                GenerationsComputed = 0
-            };
+            var wednesday = new Contestant(
+                "wednesday",
+                "wednesday's token",
+                DateTime.Now,
+                0
+            );
             contestantService.AddContestant(wednesday);
 
-            wednesday.GenerationsComputed = lastGeneration;
-            wednesday.FinalBoard = finalBoard;
+            wednesday = wednesday
+                        .UpdateGenerationsComputed(lastGeneration)
+                        .UpdateFinalBoard(finalBoard);
 
             contestantService.UpdateContestant(wednesday);
 
@@ -89,17 +90,19 @@ namespace Contest.Tests
             gameServiceMoq
                 .Setup(gs => gs.GetGameStatus())
                 .Returns(new GameStatus(finalBoard));
-            var wednesday = new Contestant{
-                Name = "wednesday",
-                Token = "wednesday's token",
-                LastSeen = DateTime.Now,
-                GenerationsComputed = 0,
-                StartedGameAt = DateTime.Now
-            };
+            
+            var wednesday = new Contestant(
+                "wednesday",
+                "wednesday's token",
+                DateTime.Now,
+                0,
+                DateTime.Now
+            );
             contestantService.AddContestant(wednesday);
 
-            wednesday.GenerationsComputed = lastGeneration;
-            wednesday.FinalBoard = finalBoard;
+            wednesday = wednesday
+                        .UpdateGenerationsComputed(lastGeneration)
+                        .UpdateFinalBoard(finalBoard);
 
             contestantService.UpdateContestant(wednesday);
 
@@ -122,22 +125,39 @@ namespace Contest.Tests
             };
 
             gameService.StartGame(startingBoard, 100, endingBoard);
-            var jonathan = new Contestant
-            {
-                Name = "jonathan",
-                Token = "token",
-                LastSeen = DateTime.Now,
-                GenerationsComputed = 0
-            };
+            var jonathan = new Contestant(
+                "jonathan",
+                "token",
+                DateTime.Now,
+                0
+            );
             contestantService.AddContestant(jonathan);
 
-            jonathan.GenerationsComputed = 100;
-            jonathan.FinalBoard = endingBoard;
+            jonathan = jonathan
+                        .UpdateGenerationsComputed(100)
+                        .UpdateFinalBoard(endingBoard);
 
             contestantService.UpdateContestant(jonathan);
 
             var newJonathan = contestantService.GetContestantByToken(jonathan.Token);
             newJonathan.CorrectFinalBoard.Should().BeTrue();
+        }
+
+        [Test]
+        public void CanResetContestantList()
+        {
+            var wednesday = new Contestant(
+                "wednesday",
+                "wednesday's token",
+                DateTime.Now,
+                0
+            );
+            contestantService.AddContestant(wednesday);
+
+            contestantService.ResetContestantList();
+
+            var emptyContestants = contestantService.GetContestants();
+            emptyContestants.Count().Should().Be(0);
         }
     }
 }

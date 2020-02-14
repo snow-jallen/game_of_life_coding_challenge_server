@@ -2,6 +2,8 @@
 @using System.Threading;
 @using Contest.Shared.Models;
 @using Contest.Shared.Enums;
+@using System.IO;
+@using Markdig;
 @inject IContestantService contestantService;
 @inject ITimeService  timeService;
 @inject IGameService gameService;
@@ -25,6 +27,7 @@ else
 
 <div>
     <h3>Instructions</h3>
+    @* @((MarkupString)instructions) *@
     <ul>
         <li><p>Go to /register and send {"name": "your name"} in the body. You will receive back a token that needs to be included in all future messages.</p></li>
         <li>
@@ -58,6 +61,15 @@ else
     const int UserExpirationInSeconds = 60;
 
     public IEnumerable<Contestant> Contestants { get; private set; }
+
+    public string instructions { get; set; }
+
+    protected override void OnInitialized()
+    {
+        // var instructionsFilePath = Path.Combine(Directory.GetCurrentDirectory() + "/../README.md");
+        // var instructionsText = File.ReadAllText(instructionsFilePath);
+        // instructions = Markdown.ToHtml(instructionsText);
+    }
 
     protected override async Task OnInitializedAsync()
     {
