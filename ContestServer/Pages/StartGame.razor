@@ -76,7 +76,7 @@
 
     public void convertRle()
     {
-
+        SerializedBoard = JsonSerializer.Serialize(RleParser.FromRle(startingRle));
     }
 
     public async Task solveBoard()
