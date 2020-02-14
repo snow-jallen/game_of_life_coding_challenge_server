@@ -1,0 +1,68 @@
+@page "/StartCustomGame"
+@using System.Threading
+@using Newtonsoft.Json
+@using Contest.Shared
+@using Contest.Shared.Models;
+
+@inject IGameService game
+@inject NavigationManager NavManager
+
+<h1>Start Custom Game</h1>
+
+<div>
+    @if (gameIsStarting)
+    {
+        <p>Solving game...</p>
+        <p>Once solution is ready clients will be notified the game has started!</p>
+    }
+    else
+    {
+        <label>Number of generations to compute:</label>
+        <br />
+        <input type="text" @bind="NumGenerations" disabled="@isBoardSolved" />
+        <br />
+
+        <label>Enter Starting Board</label>
+        <textarea class="form-control"
+            @bind-value="SerializedStartingBoard"
+            @bind-value:event="oninput"></textarea>
+        <br />
+
+        <label>Enter Ending Board</label>
+        <textarea class="form-control"
+            @bind-value="SerializedEndingBoard"
+            @bind-value:event="oninput"></textarea>
+        <hr/>
+        <button class="btn btn-danger" @onclick="startGame" disabled="@bothBoardsValid" >Start Game</button>
+    }
+</div>
+
+@code {
+    bool gameIsStarting = false;
+    private bool bothBoardsValid => startingBoard.Count() > 0 && endingBoard.Count() > 0;
+    private bool isBoardSolved = false;
+    private IEnumerable<Coordinate> startingBoard => 
+        JsonConvert.DeserializeObject<IEnumerable<Coordinate>>(SerializedStartingBoard);
+    private IEnumerable<Coordinate> endingBoard => 
+        JsonConvert.DeserializeObject<IEnumerable<Coordinate>>(SerializedEndingBoard);
+    public int NumGenerations { get; set; } = 150;
+    public string SerializedStartingBoard { get; set; }
+    public string SerializedEndingBoard { get; set; }
+
+    protected override void OnInitialized()
+    {
+        SerializedStartingBoard = "[]";
+        SerializedEndingBoard = "[]";
+    }
+
+    public void startGame()
+    {
+        if (bothBoardsValid)
+            return;
+
+        gameIsStarting = true;
+
+        game.StartGame(startingBoard, NumGenerations, endingBoard);
+        NavManager.NavigateTo("/leaderboard");
+    }
+}
