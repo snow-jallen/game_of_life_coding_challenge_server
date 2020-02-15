@@ -3,6 +3,8 @@
 @using Newtonsoft.Json
 @using Contest.Shared
 @using Contest.Shared.Models;
+@using System.IO;
+
 
 @inject IGameService game
 @inject NavigationManager NavManager
@@ -19,49 +21,71 @@
     {
         <label>Number of generations to compute:</label>
         <br />
-        <input type="text" @bind="NumGenerations" disabled="@isBoardSolved" />
+        <input type="text" @bind="NumGenerations"/>
         <br />
 
         <label>Enter Starting Board</label>
-        <textarea class="form-control"
-            @bind-value="SerializedStartingBoard"
-            @bind-value:event="oninput"></textarea>
+        <br />
+        <InputFile OnChange="HandleSelectionStarting" />
+        <p>@statusStarting</p>
         <br />
 
         <label>Enter Ending Board</label>
-        <textarea class="form-control"
-            @bind-value="SerializedEndingBoard"
-            @bind-value:event="oninput"></textarea>
+        <br />
+        <InputFile OnChange="HandleSelectionEnding" />
+        <p>@statusEnding</p>
         <hr/>
-        <button class="btn btn-danger" @onclick="startGame" disabled="@bothBoardsValid" >Start Game</button>
+        <button class="btn btn-danger" @onclick="startGame">Start Game</button>
     }
 </div>
 
 @code {
     bool gameIsStarting = false;
-    private bool bothBoardsValid => startingBoard.Count() > 0 && endingBoard.Count() > 0;
-    private bool isBoardSolved = false;
-    private IEnumerable<Coordinate> startingBoard => 
-        JsonConvert.DeserializeObject<IEnumerable<Coordinate>>(SerializedStartingBoard);
-    private IEnumerable<Coordinate> endingBoard => 
-        JsonConvert.DeserializeObject<IEnumerable<Coordinate>>(SerializedEndingBoard);
     public int NumGenerations { get; set; } = 150;
-    public string SerializedStartingBoard { get; set; }
-    public string SerializedEndingBoard { get; set; }
+    public string SerializedStartingBoard { get; set; } = "[]";
+    public string SerializedEndingBoard { get; set; } = "[]";
 
-    protected override void OnInitialized()
+    string statusStarting { get; set; }
+
+    string statusEnding { get; set; }
+
+    async Task HandleSelectionStarting(IFileListEntry[] files)
     {
-        SerializedStartingBoard = "[]";
-        SerializedEndingBoard = "[]";
+        var file = files.FirstOrDefault();
+        if (file != null)
+        {
+            Console.WriteLine("started reading file");
+            
+            var reader = new StreamReader( file.Data );
+            SerializedStartingBoard = await reader.ReadToEndAsync();
+            Console.WriteLine("ended reading file");
+
+            statusStarting = $"Finished loading {file.Size} bytes from {file.Name}";
+        }
+    }
+    async Task HandleSelectionEnding(IFileListEntry[] files)
+    {
+        var file = files.FirstOrDefault();
+        if (file != null)
+        {
+            Console.WriteLine("started reading file");
+            
+            var reader = new StreamReader( file.Data );
+            SerializedEndingBoard = await reader.ReadToEndAsync();
+            Console.WriteLine("ended reading file");
+
+            statusEnding = $"Finished loading {file.Size} bytes from {file.Name}";
+        }
     }
 
     public void startGame()
     {
-        if (bothBoardsValid)
-            return;
-
         gameIsStarting = true;
+        var startingBoard = JsonConvert.DeserializeObject<IEnumerable<Coordinate>>(SerializedStartingBoard);
+        var endingBoard = JsonConvert.DeserializeObject<IEnumerable<Coordinate>>(SerializedEndingBoard);
 
+        if(startingBoard.Count() == 0 || endingBoard.Count() == 0)
+            Console.WriteLine("#######One Board Was 0########");
         game.StartGame(startingBoard, NumGenerations, endingBoard);
         NavManager.NavigateTo("/leaderboard");
     }
