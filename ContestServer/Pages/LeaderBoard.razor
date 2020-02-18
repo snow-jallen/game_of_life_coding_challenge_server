@@ -22,7 +22,7 @@
                 <th>Correct Answer</th>
             </tr>
         </thead>
-        @foreach (var contestant in contestantService.GetContestants())
+        @foreach (var contestant in contestantService.GetContestants().OrderBy(c=>c.Elapsed))
         {
             <tr>
                 <td scope="row">@contestant.Name</td>
