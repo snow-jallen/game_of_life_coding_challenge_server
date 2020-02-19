@@ -24,6 +24,11 @@ namespace Contest.Shared.Models
             return $"{{{X},{Y}}}";
         }
 
+        public bool IsNeighbor(Coordinate cell)
+        {
+            return X <= cell.X + 1 && Y <= cell.Y + 1 && X >= cell.X - 1 && Y >= cell.Y - 1 && this != cell;// X != cell.X && Y != cell.Y;
+        }
+
         public static Coordinate FromString(string serialized)
         {
             if (String.IsNullOrWhiteSpace(serialized))

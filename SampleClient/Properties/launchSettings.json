@@ -2,7 +2,7 @@
   "profiles": {
     "SampleClient": {
       "commandName": "Project",
-      "commandLineArgs": "http://localhost:5000/ longTestClientName"
+      "commandLineArgs": "http://daybellphotography.com/ SimpleSolver40"
     }
   }
 }
