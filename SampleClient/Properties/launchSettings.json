@@ -2,7 +2,10 @@
   "profiles": {
     "SampleClient": {
       "commandName": "Project",
-      "commandLineArgs": "http://daybellphotography.com/ SimpleSolver40"
+      "commandLineArgs": "http://daybellphotography.com/ Sample"
+    },
+    "Docker": {
+      "commandName": "Docker"
     }
   }
 }

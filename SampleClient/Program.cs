@@ -52,7 +52,20 @@ namespace SampleClient
 
             client = RestService.For<IContestServer>(server);
             var registerRequest = new RegisterRequest { Name = clientName };
-            var registerResponse = await client.Register(registerRequest);
+            RegisterResponse registerResponse;
+            while (true)
+            {
+                try
+                {
+                    registerResponse = await client.Register(registerRequest);
+                    break;
+                }
+                catch
+                {
+                    registerRequest.Name += "_1";
+                }
+            }
+
             token = registerResponse.Token;
             status = ClientStatus.Waiting;
 
