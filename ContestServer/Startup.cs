@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using ContestServer.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -41,6 +42,18 @@ namespace ContestServer
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            //Path base is needed for running behind a reverse proxy, otherwise the app will not be able to find the static files
+            var pathBase = Configuration["PATH_BASE"];
+            if (!string.IsNullOrEmpty(pathBase))
+            {
+                Console.WriteLine($"Using path base: {pathBase}");
+                app.UsePathBase(pathBase);
+                app.UseForwardedHeaders(new ForwardedHeadersOptions
+                {
+                    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+                });
+            }
+            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
