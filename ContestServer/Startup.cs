@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Prometheus;
 
 namespace ContestServer
 {
@@ -50,6 +51,10 @@ namespace ContestServer
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            //Prometheus
+            app.UseMetricServer();
+            app.UseHttpMetrics();
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
