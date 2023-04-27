@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 using ContestServer.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Prometheus;
 
 namespace ContestServer
 {
@@ -41,10 +43,18 @@ namespace ContestServer
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            //Path base is needed for running behind a reverse proxy, otherwise the app will not be able to find the static files
+            var pathBase = Configuration["PATH_BASE"];
+            app.UsePathBase(pathBase);
+                 
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            //Prometheus
+            app.UseMetricServer();
+            app.UseHttpMetrics();
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
