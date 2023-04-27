@@ -30,7 +30,8 @@ namespace ContestServer
                 .Enrich.WithExceptionDetails()
                 .WriteTo.LokiHttp(()=> new LokiSinkConfiguration
                 {
-                    LokiUrl = "http://loki:3100"
+                    LokiUrl = "http://loki:3100",
+                    LogLabelProvider = new LogLabelProvider()
                 }) ;
             });
     }
